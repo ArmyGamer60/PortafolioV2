@@ -1,0 +1,1847 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portafolio — Zenith</title>
+<meta name="description" content="Trabajo de Zenith en contenido, marketing, branding y software. Cada caso, pieza por pieza." />
+<!-- El portafolio se sirve desde Vercel pero pertenece al dominio
+     principal. El canonical evita que Google lo trate como contenido
+     duplicado. Ajustar si cambia el subdominio. -->
+<link rel="canonical" href="https://portafolio.zenithestudios.com/" />
+
+<link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
+<!-- theme-color sólo admite un color literal: aquí no valen variables. -->
+<meta name="theme-color" content="#f5ede2" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#05080f" media="(prefers-color-scheme: dark)" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Portafolio — Zenith" />
+<meta property="og:description" content="Trabajo de Zenith en contenido, marketing, branding y software. Cada caso, pieza por pieza." />
+<meta property="og:url" content="https://portafolio.zenithestudios.com/" />
+<meta property="og:image" content="https://zenithestudios.com/og-image.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:site_name" content="Zenith" />
+<meta property="og:locale" content="es_MX" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Portafolio — Zenith" />
+<meta name="twitter:description" content="Trabajo de Zenith en contenido, marketing, branding y software." />
+<meta name="twitter:image" content="https://zenithestudios.com/og-image.jpg" />
+
+<!-- Tema aplicado ANTES de pintar, para que no haya parpadeo -->
+<script>
+  (function(){
+    var t = null;
+    try { t = localStorage.getItem('zenith-theme'); } catch(e) {}
+    if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', t);
+  })();
+</script>
+
+<!-- El runtime .dc.html está construido sobre React y espera window.React /
+     window.ReactDOM ya definidos. Sin estas dos líneas support.js lanza
+     "dc-runtime: window.React is not available yet" y la página queda en blanco. -->
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&amp;family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&amp;display=swap" rel="stylesheet">
+<script src="./zn-contenido.js"></script>
+<script src="./zn-estado.js"></script>
+<style>
+  /* ═══════════════════════════════════════════════════════════════
+     TOKENS — el componente venía sólo en oscuro. Cada color que tenía
+     quemado pasa a variable, para que exista también en modo claro.
+     Los nombres --zn-* son los del portafolio; --cream/--ink/--periwinkle
+     son los del resto de Zenith, para que nav, footer y fondo se peguen
+     sin traducir nada.
+     ═══════════════════════════════════════════════════════════════ */
+  :root{
+    /* — Paleta Zenith — */
+    --cream:#f5ede2; --cream-warm:#efe5d6;
+    --ink:#292621;
+    --periwinkle:#7790ed; --periwinkle-soft:#a8b8f3;
+    --periwinkle-text:#4d63c4; --periwinkle-display:#6379dd;
+    --line:rgba(41,38,33,.14);
+    --serif:"Fraunces", ui-serif, Georgia, serif;
+    --sans:"DM Sans", ui-sans-serif, system-ui, sans-serif;
+    --ease:cubic-bezier(.2,.7,.2,1);
+
+    /* — Superficies del portafolio (claro) — */
+    --zn-fondo:#f5ede2;          /* fondo de página */
+    --zn-halo:#e8dfd0;           /* halo radial superior */
+    --zn-marco:#fbf7ef;          /* interior de los marcos de módulo */
+    --zn-hueco:#ece3d5;          /* fondo de celdas y huecos de imagen */
+    --zn-carta:#fbf7ef;          /* cara de la tarjeta */
+    --zn-rayado:rgba(41,38,33,.05);
+    --zn-texto:#292621;
+    --zn-texto-90:rgba(41,38,33,.9);
+    --zn-texto-72:rgba(41,38,33,.72);
+    --zn-texto-60:rgba(41,38,33,.6);
+    --zn-texto-45:rgba(41,38,33,.45);
+    --zn-borde:rgba(41,38,33,.14);
+    --zn-borde-fuerte:rgba(41,38,33,.22);
+    --zn-velo:rgba(245,237,226,.72);   /* velo del visor */
+    --zn-pastilla:rgba(245,237,226,.8);
+    --zn-sombra:41,38,33;
+
+    /* — Fondo cosmos — */
+    --nav-icon-light-display:block;
+    --nav-icon-dark-display:none;
+    --foot-logo-light-display:block;
+    --foot-logo-dark-display:none;
+    --nebula-blend:multiply;
+    --nebula-cloud-opacity:1;
+    --nebula-noise-opacity:.42;
+    color-scheme:light;
+  }
+  :root[data-theme="dark"]{
+    --cream:#05080f; --cream-warm:var(--zn-hueco);
+    --ink:#f4efe4;
+    --periwinkle-text:var(--periwinkle-soft);
+    --periwinkle-display:var(--periwinkle-soft);
+    --line:rgba(244,239,228,.12);
+
+    --zn-fondo:#05080f;
+    --zn-halo:#0d1526;
+    --zn-marco:#070b14;
+    --zn-hueco:#0b1220;
+    --zn-carta:#101725;
+    --zn-rayado:rgba(255,255,255,.055);
+    --zn-texto:#f7f2e6;
+    --zn-texto-90:rgba(244,239,228,.9);
+    --zn-texto-72:rgba(244,239,228,.72);
+    --zn-texto-60:rgba(244,239,228,.6);
+    --zn-texto-45:rgba(244,239,228,.45);
+    --zn-borde:rgba(255,255,255,.1);
+    --zn-borde-fuerte:rgba(255,255,255,.2);
+    --zn-velo:rgba(4,7,13,.62);
+    --zn-pastilla:rgba(5,8,15,.72);
+    --zn-sombra:0,0,0;
+
+    --nav-icon-light-display:none;
+    --nav-icon-dark-display:block;
+    --foot-logo-light-display:none;
+    --foot-logo-dark-display:block;
+    --nebula-blend:screen;
+    --nebula-cloud-opacity:.32;
+    --nebula-noise-opacity:.22;
+    color-scheme:dark;
+  }
+
+  html, body { overflow-x: hidden; }
+  body {
+    margin: 0; background: var(--zn-fondo); color: var(--zn-texto);
+    font-family: var(--sans); -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%;
+    transition: background-color .5s var(--ease), color .5s var(--ease);
+  }
+  a { color: inherit; text-decoration: none; }
+  a:hover { color: var(--periwinkle-text); }
+  ::selection { background: var(--periwinkle); color: var(--cream); }
+
+  /* ───────── Fondo cosmos (el mismo de las demás páginas) ───────── */
+  .cosmos-bg{ position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+  .cosmos-layer{ position:absolute; inset:0; will-change:transform; }
+  .layer-noise{ width:100%; height:100%; opacity:var(--nebula-noise-opacity); mix-blend-mode:var(--nebula-blend); }
+  .nebula-cloud{
+    position:absolute; border-radius:50%; filter:blur(70px); will-change:transform;
+    mix-blend-mode:var(--nebula-blend); opacity:var(--nebula-cloud-opacity);
+  }
+  .cloud-periwinkle-1{ width:65vmax;height:65vmax; top:-15vmax;left:-12vmax;
+    background:radial-gradient(circle, rgba(119,144,237,.65) 0%, rgba(119,144,237,0) 60%);
+    animation:nebula-drift-1 90s ease-in-out infinite alternate; }
+  .cloud-violet-1{ width:55vmax;height:55vmax; bottom:-12vmax;right:5vmax;
+    background:radial-gradient(circle, rgba(139,111,214,.55) 0%, rgba(139,111,214,0) 58%);
+    animation:nebula-drift-2 110s ease-in-out infinite alternate; }
+  .cloud-violet-2{ width:38vmax;height:38vmax; top:55vh;right:20vw;
+    background:radial-gradient(circle, rgba(155,124,219,.42) 0%, rgba(155,124,219,0) 60%);
+    animation:nebula-drift-1 100s ease-in-out infinite alternate-reverse; }
+  .cloud-magenta-1{ width:42vmax;height:42vmax; top:25vh;left:30vw;
+    background:radial-gradient(circle, rgba(209,102,196,.50) 0%, rgba(209,102,196,0) 58%);
+    animation:nebula-drift-3 95s ease-in-out infinite alternate; }
+  .cloud-magenta-2{ width:30vmax;height:30vmax; bottom:18vh;left:18vw;
+    background:radial-gradient(circle, rgba(232,131,219,.45) 0%, rgba(232,131,219,0) 60%);
+    animation:nebula-drift-2 75s ease-in-out infinite alternate-reverse; }
+  .cloud-cursor{ width:25vmax;height:25vmax; filter:blur(60px);
+    background:radial-gradient(circle, rgba(168,184,243,.45) 0%, rgba(168,184,243,0) 60%);
+    transform:translate3d(50vw,50vh,0) translate(-50%,-50%); }
+  @keyframes nebula-drift-1{ 0%{transform:translate(0,0) scale(1)} 100%{transform:translate(40px,-30px) scale(1.08)} }
+  @keyframes nebula-drift-2{ 0%{transform:translate(0,0) scale(1)} 100%{transform:translate(-35px,40px) scale(.95)} }
+  @keyframes nebula-drift-3{ 0%{transform:translate(0,0) scale(.95)} 100%{transform:translate(25px,25px) scale(1.1)} }
+  .filament{ position:absolute; border-radius:50%; filter:blur(28px); mix-blend-mode:screen; will-change:transform; }
+  .filament-1{ width:38vmax;height:6vmax; top:30vh;left:10vw; transform:rotate(-18deg);
+    background:radial-gradient(ellipse, rgba(232,131,219,.65) 0%, rgba(232,131,219,0) 70%); }
+  .filament-2{ width:30vmax;height:5vmax; top:62vh;right:8vw; transform:rotate(12deg);
+    background:radial-gradient(ellipse, rgba(168,184,243,.55) 0%, rgba(168,184,243,0) 70%); }
+  .filament-3{ width:24vmax;height:4vmax; bottom:14vh;left:32vw; transform:rotate(-7deg);
+    background:radial-gradient(ellipse, rgba(209,102,196,.5) 0%, rgba(209,102,196,0) 70%); }
+  .star-dot{ position:absolute; border-radius:50%; background:var(--periwinkle-soft);
+    opacity:var(--so,.5); animation:twinkle var(--tw,4s) ease-in-out var(--td,0s) infinite; }
+  .star-dot.warm{ background:#e8b4a0; }
+  @keyframes twinkle{ 0%,100%{opacity:var(--so,.5)} 50%{opacity:calc(var(--so,.5) * .25)} }
+  .drift-star{ position:absolute; border-radius:50%; background:var(--periwinkle-soft);
+    opacity:0; animation:drift linear forwards; }
+  @keyframes drift{ 0%{opacity:0;transform:translate(0,0)} 12%{opacity:var(--peak,.6)}
+    88%{opacity:var(--peak,.6)} 100%{opacity:0;transform:translate(var(--tx),var(--ty))} }
+  @media (max-width:720px){ .cloud-magenta-2,.cloud-violet-2,.filament-3{display:none} .nebula-cloud{filter:blur(50px)} }
+  @media (prefers-reduced-motion:reduce){ .nebula-cloud,.filament,.star-dot,.drift-star{animation:none!important} }
+
+  /* ───────── Cursor destello ───────── */
+  .cursor{
+    position:fixed;top:0;left:0;width:14px;height:14px;
+    pointer-events:none;z-index:9999;mix-blend-mode:difference;
+    transform:translate(-50%,-50%);transition:opacity .3s var(--ease), transform .15s var(--ease);
+  }
+  .cursor svg{ width:100%; height:100%; fill:var(--periwinkle); }
+  @media (hover:none){ .cursor{display:none} }
+
+  .nav{
+    position:fixed;top:18px;left:0;right:0;z-index:50;
+    display:flex;justify-content:center;align-items:center;
+    padding:0 20px;pointer-events:none;
+  }
+  .nav-glass{
+    pointer-events:auto;
+    display:flex;align-items:center;gap:8px;
+    padding:6px;border-radius:999px;
+    background:rgba(245,237,226,.45);
+    backdrop-filter:blur(22px) saturate(180%) brightness(1.04);
+    -webkit-backdrop-filter:blur(22px) saturate(180%) brightness(1.04);
+    border:1px solid rgba(255,255,255,.55);
+    box-shadow:
+      inset 0 1px 1px rgba(255,255,255,.85),
+      inset 0 -1px 1px rgba(41,38,33,.06),
+      inset 0 0 0 1px rgba(245,237,226,.35),
+      0 12px 32px rgba(41,38,33,.08),
+      0 2px 8px rgba(41,38,33,.04);
+    position:relative;
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease);
+  }
+  /* glossy highlight overlay */
+  .nav-glass::before{
+    content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 35%, rgba(255,255,255,0) 65%, rgba(41,38,33,.04) 100%);
+    mix-blend-mode:screen;
+  }
+  .nav-glass::after{
+    /* subtle iridescent edge — periwinkle hint */
+    content:"";position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;
+    background:linear-gradient(110deg, rgba(119,144,237,.0) 35%, rgba(119,144,237,.18) 50%, rgba(119,144,237,.0) 65%);
+    -webkit-mask:linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+    -webkit-mask-composite:xor;mask-composite:exclude;
+    padding:1px;
+    opacity:.6;
+  }
+  .nav-glass:hover{
+    box-shadow:
+      inset 0 1px 1px rgba(255,255,255,.95),
+      inset 0 -1px 1px rgba(41,38,33,.08),
+      inset 0 0 0 1px rgba(245,237,226,.4),
+      0 18px 40px rgba(41,38,33,.10),
+      0 2px 10px rgba(41,38,33,.05);
+  }
+
+  .nav-link{
+    position:relative;
+    padding:10px 16px;border-radius:999px;
+    font-size:13px;letter-spacing:.02em;font-weight:500;
+    color:var(--ink);
+    transition:background .3s var(--ease), color .3s var(--ease);
+  }
+  .nav-link:hover{background:rgba(41,38,33,.06)}
+  .nav-link.is-active{background:rgba(41,38,33,.08)}
+
+  .nav-icon{
+    position:relative;
+    width:42px;height:42px;
+    margin:0 4px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg, rgba(255,255,255,.72), rgba(255,255,255,.30));
+    border:1px solid rgba(255,255,255,.7);
+    box-shadow:
+      inset 0 1px 1px rgba(255,255,255,.85),
+      inset 0 -1px 1px rgba(41,38,33,.08),
+      0 4px 12px rgba(41,38,33,.08);
+    transition:transform .4s var(--ease), box-shadow .3s var(--ease);
+    overflow:hidden;
+    /* Light position (set by JS) */
+    --lx:30%;
+    --ly:25%;
+  }
+  .nav-icon:hover{
+    transform:scale(1.08);
+    box-shadow:
+      inset 0 1px 1px rgba(255,255,255,.95),
+      inset 0 -1px 1px rgba(41,38,33,.1),
+      0 6px 16px rgba(41,38,33,.12),
+      0 0 0 4px rgba(119,144,237,.14);
+  }
+
+  /* The Zenith "n" wordmark, centered */
+  .nav-icon-img{
+    position:relative;
+    width:62%;height:62%;
+    object-fit:contain;
+    z-index:1;
+    /* slight lift toward optical center */
+    transform:translateY(0.5px);
+    /* faint inner shadow to read on glass */
+    filter:drop-shadow(0 1px 0 rgba(255,255,255,.4));
+    pointer-events:none;
+  }
+
+  /* Cursor-driven specular highlight */
+  .nav-icon::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:inherit;
+    pointer-events:none;
+    z-index:2;
+    background:
+      radial-gradient(circle at var(--lx) var(--ly),
+        rgba(255,255,255,.75) 0%,
+        rgba(255,255,255,.32) 18%,
+        rgba(255,255,255,0)   55%),
+      radial-gradient(circle at calc(100% - var(--lx)) calc(100% - var(--ly)),
+        rgba(119,144,237,.28) 0%,
+        rgba(119,144,237,0)   45%);
+    mix-blend-mode:screen;
+    transition:opacity .3s var(--ease);
+  }
+  .nav-icon:hover::after{opacity:1.15}
+
+  /* mobile collapse */
+  @media (max-width:680px){
+    .nav-link{padding:8px 12px;font-size:12px}
+    .nav-link[data-mobile-hide]{display:none}
+    .nav-icon{width:38px;height:38px}
+  }
+
+
+  [data-theme="dark"] .nav-glass{
+    background:rgba(20,24,32,.55);
+    border:1px solid rgba(236,228,212,.14);
+    box-shadow:
+      inset 0 1px 1px rgba(236,228,212,.18),
+      inset 0 -1px 1px rgba(0,0,0,.4),
+      0 12px 32px rgba(0,0,0,.45),
+      0 2px 8px rgba(0,0,0,.25);
+  }
+  [data-theme="dark"] .nav-glass::before{
+    background:linear-gradient(180deg, rgba(236,228,212,.08) 0%, transparent 35%, transparent 65%, rgba(0,0,0,.25) 100%);
+  }
+  [data-theme="dark"] .nav-link{color:var(--ink)}
+  [data-theme="dark"] .nav-link:hover{background:rgba(236,228,212,.07)}
+  [data-theme="dark"] .nav-link.is-active{background:rgba(236,228,212,.10)}
+  [data-theme="dark"] .nav-icon{
+    background:linear-gradient(135deg, rgba(40,46,60,.85), rgba(20,24,32,.45));
+    border:1px solid rgba(236,228,212,.18);
+    box-shadow:
+      inset 0 1px 1px rgba(236,228,212,.18),
+      inset 0 -1px 1px rgba(0,0,0,.4),
+      0 4px 12px rgba(0,0,0,.4);
+  }
+
+  /* Footer + nav logo dual versions (doubled classes for specificity over base rule) */
+  .foot-brand-logo.foot-brand-logo-light{display:var(--foot-logo-light-display)}
+  .foot-brand-logo.foot-brand-logo-dark{display:var(--foot-logo-dark-display)}
+  .nav-icon-img.nav-icon-img-light{display:var(--nav-icon-light-display)}
+  .nav-icon-img.nav-icon-img-dark{display:var(--nav-icon-dark-display)}
+
+  /* ───────── Theme Toggle ───────── */
+  .theme-toggle{
+    position:fixed;
+    top:18px;left:24px;
+    z-index:51;
+    width:42px;height:42px;border-radius:999px;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(245,237,226,.45);
+    backdrop-filter:blur(22px) saturate(180%) brightness(1.04);
+    -webkit-backdrop-filter:blur(22px) saturate(180%) brightness(1.04);
+    border:1px solid rgba(255,255,255,.55);
+    box-shadow:
+      inset 0 1px 1px rgba(255,255,255,.85),
+      inset 0 -1px 1px rgba(41,38,33,.06),
+      0 12px 32px rgba(41,38,33,.08),
+      0 2px 8px rgba(41,38,33,.04);
+    cursor:pointer;
+    transition:transform .4s var(--ease), box-shadow .3s var(--ease), background .3s var(--ease);
+  }
+  .theme-toggle:hover{
+    transform:scale(1.06);
+    box-shadow:
+      inset 0 1px 1px rgba(255,255,255,.95),
+      0 6px 16px rgba(41,38,33,.12),
+      0 0 0 4px rgba(119,144,237,.14);
+  }
+  [data-theme="dark"] .theme-toggle{
+    background:rgba(20,24,32,.55);
+    border:1px solid rgba(236,228,212,.14);
+    box-shadow:
+      inset 0 1px 1px rgba(236,228,212,.18),
+      inset 0 -1px 1px rgba(0,0,0,.4),
+      0 12px 32px rgba(0,0,0,.45);
+  }
+  [data-theme="dark"] .theme-toggle:hover{
+    box-shadow:
+      inset 0 1px 1px rgba(236,228,212,.22),
+      0 6px 16px rgba(0,0,0,.5),
+      0 0 0 4px rgba(119,144,237,.18);
+  }
+  .theme-toggle svg{
+    width:18px;height:18px;
+    fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;
+    transition:opacity .3s var(--ease), transform .5s var(--ease);
+  }
+  .theme-toggle .icon-moon{display:block}
+  .theme-toggle .icon-sun{display:none}
+  [data-theme="dark"] .theme-toggle .icon-moon{display:none}
+  [data-theme="dark"] .theme-toggle .icon-sun{display:block}
+  @media (max-width:680px){
+    .theme-toggle{width:36px;height:36px;left:16px;top:14px}
+    .theme-toggle svg{width:16px;height:16px}
+  }
+
+
+  /* ───────── Menú móvil ───────── */
+  .nav-burger{ display:none; position:relative; width:36px;height:36px; flex-shrink:0;
+    border:none; background:transparent; cursor:pointer; border-radius:50%; }
+  .nav-burger span{ position:absolute; left:10px; width:16px; height:1.5px; background:var(--zn-texto);
+    border-radius:2px; transition:transform .35s var(--ease); }
+  .nav-burger span:nth-child(1){ top:15px } .nav-burger span:nth-child(2){ top:20px }
+  .nav-burger[aria-expanded="true"] span:nth-child(1){ transform:translateY(2.5px) rotate(45deg) }
+  .nav-burger[aria-expanded="true"] span:nth-child(2){ transform:translateY(-2.5px) rotate(-45deg) }
+  .mobile-menu{ position:fixed; inset:0; z-index:9998; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:6px; padding:96px 28px 48px;
+    background:var(--zn-fondo); opacity:0; visibility:hidden;
+    transition:opacity .35s var(--ease), visibility .35s var(--ease); }
+  .mobile-menu.is-open{ opacity:1; visibility:visible }
+  .mobile-menu-link{ font-family:var(--serif); font-weight:500; font-size:clamp(30px,9vw,44px);
+    line-height:1.25; letter-spacing:-.025em; color:var(--zn-texto);
+    font-variation-settings:"opsz" 144,"SOFT" 70; opacity:0; transform:translateY(14px);
+    transition:opacity .4s var(--ease), transform .4s var(--ease), color .25s var(--ease); }
+  .mobile-menu.is-open .mobile-menu-link{ opacity:1; transform:none }
+  .mobile-menu.is-open .mobile-menu-link:nth-child(1){ transition-delay:.06s }
+  .mobile-menu.is-open .mobile-menu-link:nth-child(2){ transition-delay:.11s }
+  .mobile-menu.is-open .mobile-menu-link:nth-child(3){ transition-delay:.16s }
+  .mobile-menu.is-open .mobile-menu-link:nth-child(4){ transition-delay:.21s }
+  .mobile-menu.is-open .mobile-menu-link:nth-child(5){ transition-delay:.26s }
+  .mobile-menu-link.is-active{ color:var(--periwinkle-text); font-style:italic }
+  .mobile-menu-foot{ margin-top:38px; display:flex; flex-direction:column; align-items:center; gap:16px;
+    opacity:0; transition:opacity .4s var(--ease) .32s; }
+  .mobile-menu.is-open .mobile-menu-foot{ opacity:1 }
+  .mobile-menu-cta{ display:inline-flex; align-items:center; min-height:48px; padding:14px 30px;
+    border-radius:999px; background:var(--zn-texto); color:var(--zn-fondo); font-size:15px; font-weight:500; }
+  .mobile-menu-mail{ font-size:14px; opacity:.7 }
+  body.menu-open{ overflow:hidden }
+  @media (max-width:680px){ .nav-burger{display:block} .nav-glass .nav-link{display:none} }
+  @media (min-width:681px){ .mobile-menu{display:none} }
+
+  /* ───────── Estado vacío: aún no hay tarjetas en la categoría ───────── */
+  [data-zn-pista]:not(:has(> *))::after{
+    content:"Aún no hay trabajo publicado aquí.";
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-family:var(--serif); font-style:italic; font-size:clamp(15px,2vw,19px);
+    color:var(--zn-texto-45); text-align:center; padding:0 24px;
+  }
+
+  /* ───────── Footer ───────── */
+  /* ═══ Ver todo ═══════════════════════════════════════════════
+     La rejilla que recoge lo que no cabe en el abanico. Usa los
+     mismos tokens que el resto, así que hereda claro y oscuro sin
+     reglas propias por tema. */
+  .zn-todo{ position:relative; z-index:1; max-width:1180px; margin:0 auto;
+            padding:70px 24px 10px }
+  .zn-todo-cab{ text-align:center; margin-bottom:38px }
+  .zn-todo-cab h2{ font-family:var(--zn-serif); font-weight:500;
+                   font-size:clamp(26px,4vw,38px); color:var(--zn-texto); margin:0 0 8px }
+  .zn-todo-cab p{ color:var(--zn-texto-72); font-size:14px; margin:0 }
+
+  .zn-todo-grupo{ margin-bottom:44px }
+  .zn-todo-titulo{ display:flex; align-items:center; gap:10px; margin-bottom:16px;
+                   font-family:var(--zn-serif); font-size:20px; font-weight:500;
+                   color:var(--zn-texto) }
+  .zn-todo-punto{ width:9px; height:9px; border-radius:50%; flex:none }
+
+  .zn-todo-rejilla{ display:grid; gap:16px;
+                    grid-template-columns:repeat(auto-fill,minmax(210px,1fr)) }
+  @media (max-width:560px){
+    .zn-todo{ padding:52px 18px 6px }
+    .zn-todo-rejilla{ grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px }
+  }
+
+  .zn-todo-item{ position:relative; display:block; width:100%; text-align:left;
+                 border:1px solid var(--zn-borde); border-radius:14px; overflow:hidden;
+                 background:var(--zn-carta); cursor:pointer; padding:0;
+                 aspect-ratio:3/4; font:inherit; color:inherit;
+                 transition:transform .3s var(--zn-ease), border-color .3s var(--zn-ease) }
+  .zn-todo-item:hover, .zn-todo-item:focus-visible{ transform:translateY(-4px) }
+  .zn-todo-item:focus-visible{ outline:2px solid var(--zn-texto); outline-offset:3px }
+  .zn-todo-img{ position:absolute; inset:0; width:100%; height:100%;
+                object-fit:cover; display:block }
+  .zn-todo-rayas{ position:absolute; inset:0;
+    background-image:repeating-linear-gradient(135deg, var(--zn-rayado) 0 9px, rgba(255,255,255,0) 9px 18px) }
+  /* Velo para que el texto se lea sobre cualquier foto. */
+  .zn-todo-velo{ position:absolute; inset:0;
+    background:linear-gradient(to top, rgba(0,0,0,.78) 0%, rgba(0,0,0,.15) 46%, rgba(0,0,0,.28) 100%) }
+  .zn-todo-txt{ position:absolute; left:0; right:0; bottom:0; padding:14px 15px }
+  .zn-todo-et{ font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+               color:rgba(244,239,228,.72); display:block;
+               overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+  .zn-todo-nom{ font-family:var(--zn-serif); font-size:17px; color:#f8f4ea; margin-top:3px;
+                overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+  .zn-todo-n{ position:absolute; top:10px; right:10px; background:rgba(0,0,0,.55);
+              color:#f4efe4; border-radius:999px; font-size:11px; padding:3px 9px }
+
+  /* ═══ Visor de la rejilla ════════════════════════════════════ */
+  .zn-caja{ position:fixed; inset:0; z-index:400; background:rgba(8,8,12,.94);
+            overflow-y:auto; padding:64px 20px 40px;
+            -webkit-overflow-scrolling:touch }
+  .zn-caja-cerrar{ position:fixed; top:18px; right:18px; z-index:2;
+                   width:44px; height:44px; border-radius:50%; cursor:pointer;
+                   background:rgba(255,255,255,.1); color:#f4efe4;
+                   border:1px solid rgba(255,255,255,.22); font-size:17px }
+  .zn-caja-cerrar:hover{ background:rgba(255,255,255,.2) }
+  .zn-caja-cuerpo{ max-width:1000px; margin:0 auto }
+  .zn-caja-cab{ text-align:center; margin-bottom:30px; color:#f4efe4 }
+  .zn-caja-etiqueta{ font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+                     color:rgba(244,239,228,.66) }
+  .zn-caja-cab h3{ font-family:var(--zn-serif); font-weight:500;
+                   font-size:clamp(24px,5vw,36px); margin:6px 0 0 }
+  .zn-caja-cab p{ color:rgba(244,239,228,.72); font-size:14px; margin:8px auto 0; max-width:60ch }
+  .zn-caja-ficha{ display:inline-block; margin-top:14px; font-size:13px;
+                  color:rgba(244,239,228,.8); border-bottom:1px solid rgba(244,239,228,.3);
+                  padding-bottom:2px; transition:color .2s, border-color .2s }
+  .zn-caja-ficha:hover{ color:#fff; border-color:#fff }
+  .zn-caja-tira{ display:flex; flex-direction:column; gap:16px }
+  .zn-caja-tira img{ width:100%; height:auto; display:block; border-radius:12px;
+                     background:rgba(255,255,255,.05) }
+  .zn-caja-vacio{ text-align:center; color:rgba(244,239,228,.6); padding:50px 0; font-size:14px }
+
+  .zn-foot{ position:relative; z-index:1; border-top:1px solid var(--zn-borde);
+    padding:48px 24px 56px; text-align:center; }
+  .zn-foot-nav{ display:flex; gap:22px; justify-content:center; flex-wrap:wrap; margin-bottom:22px; font-size:13px }
+  .zn-foot-nav a{ color:var(--zn-texto-72); transition:color .25s var(--ease) }
+  .zn-foot-nav a:hover{ color:var(--periwinkle-text) }
+  .zn-foot-social{ display:flex; gap:14px; justify-content:center; margin-bottom:22px }
+  .zn-foot-social a{ width:34px;height:34px; display:grid; place-items:center; border-radius:50%;
+    border:1px solid var(--zn-borde); color:var(--zn-texto-60);
+    transition:color .25s var(--ease), border-color .25s var(--ease) }
+  .zn-foot-social a:hover{ color:var(--periwinkle-text); border-color:var(--periwinkle) }
+  .zn-foot-social svg{ width:15px;height:15px; fill:currentColor }
+  .zn-foot-copy{ font-size:12px; color:var(--zn-texto-45) }
+  .zn-foot-copy a{ border-bottom:1px solid currentColor }
+  @keyframes znVelo { from { opacity: 0 } to { opacity: 1 } }
+  @keyframes znPanel {
+    from { opacity: 0; transform: translateY(26px) scale(0.965) }
+    to   { opacity: 1; transform: translateY(0) scale(1) }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-zn-visor], [data-zn-panel] { animation: none !important }
+  }
+  [data-zn-scroll] { scrollbar-width: thin; scrollbar-color: var(--zn-borde-fuerte) transparent }
+  [data-zn-scroll]::-webkit-scrollbar { width: 8px; height: 8px }
+  [data-zn-scroll]::-webkit-scrollbar-track { background: transparent }
+  [data-zn-scroll]::-webkit-scrollbar-thumb { background: var(--zn-borde-fuerte); border-radius: 99px }
+  [data-zn-scroll]::-webkit-scrollbar-thumb:hover { background: var(--zn-texto-45) }
+</style>
+</helmet>
+<div style="position: relative; z-index: 1; min-height: 100vh; background: radial-gradient(120% 90% at 50% -20%, var(--zn-halo) 0%, transparent 62%); padding: clamp(96px, 12vw, 132px) clamp(12px, 3.5vw, 26px) clamp(48px, 8vw, 90px);">
+  <div style="max-width: 1340px; margin: 0 auto;">
+
+    <header style="display: flex; flex-direction: column; align-items: center; gap: 16px; margin-bottom: 34px;">
+      <h1 style="margin: 0; font-family: var(--serif); font-weight: 600; font-size: clamp(34px, 8vw, 64px); line-height: 1; letter-spacing: -0.025em; color: var(--zn-texto); font-variation-settings: 'opsz' 144, 'SOFT' 70;">Portafolio</h1>
+      <div style="display: flex; align-items: center; gap: 14px; width: 100%; max-width: 620px;">
+        <span style="flex: 1; height: 1px; background: linear-gradient(90deg, transparent 0%, var(--zn-borde-fuerte) 100%);"></span>
+        <span style="font-size: 13px; color: var(--zn-texto-60);">✦</span>
+        <span style="flex: 1; height: 1px; background: linear-gradient(90deg, var(--zn-borde-fuerte) 0%, transparent 100%);"></span>
+      </div>
+    </header>
+
+    <div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: clamp(14px, 2.5vw, 26px);">
+
+      <section ref="{{ refSecContenido }}" style="{{ secContenido }}">
+        <div style="{{ marcoContenido }}">
+          <div style="{{ marcoContenidoInterior }}">
+            <div onClick="{{ promContenido }}" style="{{ tituloFilaContenido }}">
+              <span style="flex: 1; height: 1px; background: {{ reglaContenido }};"></span>
+              <span style="display: flex; align-items: center; gap: 13px; padding: 0 22px;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="{{ acentoContenido }}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.5A1.5 1.5 0 0 1 4.5 6h4l2 2.5h7A1.5 1.5 0 0 1 19 10v7.5A1.5 1.5 0 0 1 17.5 19h-13A1.5 1.5 0 0 1 3 17.5z"></path></svg>
+                <span style="font-family: 'Playfair Display', Georgia, serif; font-weight: 600; letter-spacing: -0.01em; color: var(--zn-texto); {{ tituloContenido }}">Contenido</span>
+              </span>
+              <span style="flex: 1; height: 1px; background: {{ reglaContenidoFin }};"></span>
+            </div>
+            <div ref="{{ refPistaContenido }}" data-zn-pista="1" style="{{ pistaContenido }}">
+              <sc-for list="{{ contenido }}" as="t" hint-placeholder-count="5">
+                <div onMouseEnter="{{ t.entrar }}" onMouseLeave="{{ t.salir }}" onPointerDown="{{ t.marcar }}" onPointerUp="{{ t.aflojar }}" onPointerCancel="{{ t.aflojar }}" onClick="{{ t.elegir }}" onTransitionEnd="{{ t.fin }}" style="{{ t.estilo }}">
+                  <div style="{{ t.pulso }}">
+                    <div style="{{ t.cara }}">
+                      <span style="align-self: flex-start; border-radius: 999px; background: var(--zn-pastilla); border: 1px solid var(--zn-borde); letter-spacing: 0.2em; text-transform: uppercase; color: var(--zn-texto-72); {{ t.badge }}">{{ t.red }}</span>
+                      <div style="display: flex; flex-direction: column; gap: 7px;">
+                        <span style="font-family: ui-monospace, monospace; letter-spacing: 0.16em; text-transform: uppercase; color: var(--zn-texto-60); {{ t.pagsEstilo }}">{{ t.pags }}</span>
+                        <span style="font-family: 'Playfair Display', Georgia, serif; font-weight: 500; line-height: 1.1; color: var(--zn-texto); {{ t.nombreEstilo }}">{{ t.nombre }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section ref="{{ refSecMarketing }}" style="{{ secMarketing }}">
+        <div style="{{ marcoMarketing }}">
+          <div style="{{ marcoMarketingInterior }}">
+            <div onClick="{{ promMarketing }}" style="{{ tituloFilaMarketing }}">
+              <span style="flex: 1; height: 1px; background: {{ reglaMarketing }};"></span>
+              <span style="display: flex; align-items: center; gap: 13px; padding: 0 18px;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="{{ acentoMarketing }}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5v3a1 1 0 0 0 1 1h2l4.5 3.5V6L7 9.5H5a1 1 0 0 0-1 1z"></path><path d="M15.5 9.2a4 4 0 0 1 0 5.6"></path><path d="M18 7a7 7 0 0 1 0 10"></path></svg>
+                <span style="font-family: 'Playfair Display', Georgia, serif; font-weight: 600; letter-spacing: -0.01em; color: var(--zn-texto); {{ tituloMarketing }}">Marketing</span>
+              </span>
+              <span style="flex: 1; height: 1px; background: {{ reglaMarketingFin }};"></span>
+            </div>
+            <div ref="{{ refPistaMarketing }}" data-zn-pista="1" style="{{ pistaMarketing }}">
+              <sc-for list="{{ marketing }}" as="t" hint-placeholder-count="3">
+                <div onMouseEnter="{{ t.entrar }}" onMouseLeave="{{ t.salir }}" onPointerDown="{{ t.marcar }}" onPointerUp="{{ t.aflojar }}" onPointerCancel="{{ t.aflojar }}" onClick="{{ t.elegir }}" onTransitionEnd="{{ t.fin }}" style="{{ t.estilo }}">
+                  <div style="{{ t.pulso }}">
+                    <div style="{{ t.cara }}">
+                      <span style="align-self: flex-start; border-radius: 999px; background: var(--zn-pastilla); border: 1px solid var(--zn-borde); letter-spacing: 0.2em; text-transform: uppercase; color: var(--zn-texto-72); {{ t.badge }}">{{ t.red }}</span>
+                      <div style="display: flex; flex-direction: column; gap: 7px;">
+                        <span style="font-family: ui-monospace, monospace; letter-spacing: 0.16em; text-transform: uppercase; color: var(--zn-texto-60); {{ t.pagsEstilo }}">{{ t.pags }}</span>
+                        <span style="font-family: 'Playfair Display', Georgia, serif; font-weight: 500; line-height: 1.1; color: var(--zn-texto); {{ t.nombreEstilo }}">{{ t.nombre }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section ref="{{ refSecBranding }}" style="{{ secBranding }}">
+        <div style="{{ marcoBranding }}">
+          <div style="{{ marcoBrandingInterior }}">
+            <div onClick="{{ promBranding }}" style="{{ tituloFilaBranding }}">
+              <span style="flex: 1; height: 1px; background: {{ reglaBranding }};"></span>
+              <span style="display: flex; align-items: center; gap: 13px; padding: 0 18px;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="{{ acentoBranding }}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19l3.5-3.5"></path><path d="M8.5 15.5 6.8 13.8a1 1 0 0 1 0-1.4l6.4-6.4a3.5 3.5 0 0 1 5 4.9l-6.4 6.4a1 1 0 0 1-1.4 0z"></path><path d="M13.2 7.4l3.4 3.4"></path></svg>
+                <span style="font-family: 'Playfair Display', Georgia, serif; font-weight: 600; letter-spacing: -0.01em; color: var(--zn-texto); {{ tituloBranding }}">Branding</span>
+              </span>
+              <span style="flex: 1; height: 1px; background: {{ reglaBrandingFin }};"></span>
+            </div>
+            <div ref="{{ refPistaBranding }}" data-zn-pista="1" style="{{ pistaBranding }}">
+              <sc-for list="{{ branding }}" as="t" hint-placeholder-count="3">
+                <div onMouseEnter="{{ t.entrar }}" onMouseLeave="{{ t.salir }}" onPointerDown="{{ t.marcar }}" onPointerUp="{{ t.aflojar }}" onPointerCancel="{{ t.aflojar }}" onClick="{{ t.elegir }}" onTransitionEnd="{{ t.fin }}" style="{{ t.estilo }}">
+                  <div style="{{ t.pulso }}">
+                    <div style="{{ t.cara }}">
+                      <span style="align-self: flex-start; border-radius: 999px; background: var(--zn-pastilla); border: 1px solid var(--zn-borde); letter-spacing: 0.2em; text-transform: uppercase; color: var(--zn-texto-72); {{ t.badge }}">{{ t.red }}</span>
+                      <div style="display: flex; flex-direction: column; gap: 7px;">
+                        <span style="font-family: ui-monospace, monospace; letter-spacing: 0.16em; text-transform: uppercase; color: var(--zn-texto-60); {{ t.pagsEstilo }}">{{ t.pags }}</span>
+                        <span style="font-family: 'Playfair Display', Georgia, serif; font-weight: 500; line-height: 1.1; color: var(--zn-texto); {{ t.nombreEstilo }}">{{ t.nombre }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section ref="{{ refSecSoftware }}" style="{{ secSoftware }}">
+        <div style="{{ marcoSoftware }}">
+          <div style="{{ marcoSoftwareInterior }}">
+            <div onClick="{{ promSoftware }}" style="{{ tituloFilaSoftware }}">
+              <span style="flex: 1; height: 1px; background: {{ reglaSoftware }};"></span>
+              <span style="display: flex; align-items: center; gap: 13px; padding: 0 18px;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="{{ acentoSoftware }}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 8 6 12l3.5 4"></path><path d="M14.5 8 18 12l-3.5 4"></path></svg>
+                <span style="font-family: 'Playfair Display', Georgia, serif; font-weight: 600; letter-spacing: -0.01em; color: var(--zn-texto); {{ tituloSoftware }}">Software</span>
+              </span>
+              <span style="flex: 1; height: 1px; background: {{ reglaSoftwareFin }};"></span>
+            </div>
+            <div ref="{{ refPistaSoftware }}" data-zn-pista="1" style="{{ pistaSoftware }}">
+              <sc-for list="{{ software }}" as="t" hint-placeholder-count="3">
+                <div onMouseEnter="{{ t.entrar }}" onMouseLeave="{{ t.salir }}" onPointerDown="{{ t.marcar }}" onPointerUp="{{ t.aflojar }}" onPointerCancel="{{ t.aflojar }}" onClick="{{ t.elegir }}" onTransitionEnd="{{ t.fin }}" style="{{ t.estilo }}">
+                  <div style="{{ t.pulso }}">
+                    <div style="{{ t.cara }}">
+                      <span style="align-self: flex-start; border-radius: 999px; background: var(--zn-pastilla); border: 1px solid var(--zn-borde); letter-spacing: 0.2em; text-transform: uppercase; color: var(--zn-texto-72); {{ t.badge }}">{{ t.red }}</span>
+                      <div style="display: flex; flex-direction: column; gap: 7px;">
+                        <span style="font-family: ui-monospace, monospace; letter-spacing: 0.16em; text-transform: uppercase; color: var(--zn-texto-60); {{ t.pagsEstilo }}">{{ t.pags }}</span>
+                        <span style="font-family: 'Playfair Display', Georgia, serif; font-weight: 500; line-height: 1.1; color: var(--zn-texto); {{ t.nombreEstilo }}">{{ t.nombre }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+
+<sc-if value="{{ visorAbierto }}" hint-placeholder-val="{{ false }}">
+  <div data-zn-visor="1" onClick="{{ cerrarVisor }}" style="position: fixed; inset: 0; z-index: 900; display: flex; align-items: center; justify-content: center; padding: clamp(10px, 3vw, 42px); background: var(--zn-velo); backdrop-filter: blur(22px) saturate(1.12); -webkit-backdrop-filter: blur(22px) saturate(1.12); animation: znVelo 240ms ease both;">
+    <div data-zn-panel="1" role="dialog" aria-modal="true" aria-label="{{ visorNombre }}" onClick="{{ tragar }}" style="{{ visorMarco }}">
+      <div data-zn-scroll="1" style="{{ visorInterior }}">
+
+        <div style="display: flex; align-items: flex-start; gap: 16px; margin-bottom: clamp(16px, 2.4vw, 26px);">
+          <div style="display: flex; flex-direction: column; gap: 9px; min-width: 0;">
+            <div style="display: flex; align-items: center; gap: 11px; flex-wrap: wrap;">
+              <span style="{{ visorBadge }}">{{ visorRed }}</span>
+              <span style="font-family: ui-monospace, monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--zn-texto-45);">{{ visorTipo }}</span>
+              <span style="font-family: ui-monospace, monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--zn-texto-45);">{{ visorPags }}</span>
+            </div>
+            <h2 style="margin: 0; font-family: 'Playfair Display', Georgia, serif; font-weight: 600; font-size: clamp(24px, 3.4vw, 38px); line-height: 1.04; letter-spacing: -0.01em; color: var(--zn-texto);">{{ visorNombre }}</h2>
+            <p style="margin: 0; max-width: 56ch; font-size: 13px; line-height: 1.55; color: var(--zn-texto-60); text-wrap: pretty;">{{ visorNota }}</p>
+          </div>
+          <button onClick="{{ cerrarVisor }}" aria-label="Cerrar" style="margin-left: auto; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 999px; cursor: pointer; background: var(--zn-borde); border: 1px solid var(--zn-borde); color: var(--zn-texto-72);" style-hover="background: var(--zn-borde); color: var(--zn-texto);">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+          </button>
+        </div>
+
+        <sc-if value="{{ esMosaico }}" hint-placeholder-val="{{ false }}">
+          <div style="{{ vRejilla }}">
+            <sc-for list="{{ vPiezas }}" as="f" hint-placeholder-count="6">
+              <div style="{{ f.celda }}">
+                <div role="img" aria-label="{{ f.hint }}" style="{{ f.fondo }}"></div>
+              </div>
+            </sc-for>
+            <div aria-hidden="true" style="flex: 999999 1 0px; height: 0;"></div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ esCarrusel }}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; flex-direction: column; gap: 13px;">
+            <div onPointerDown="{{ vTocar }}" onPointerUp="{{ vSoltar }}" style="touch-action: pan-y; position: relative; aspect-ratio: 3 / 2; border-radius: 13px; overflow: hidden; background: var(--zn-hueco); border: 1px solid rgba(255,255,255,0.08);">
+              <div role="img" aria-label="{{ vHint }}" style="{{ vFondo }}"></div>
+              <button onClick="{{ anterior }}" aria-label="Anterior" style="{{ flechaIzq }}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 6l-6 6 6 6"></path></svg>
+              </button>
+              <button onClick="{{ siguiente }}" aria-label="Siguiente" style="{{ flechaDer }}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6l6 6-6 6"></path></svg>
+              </button>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; overflow-x: auto; padding-bottom: 2px;">
+              <sc-for list="{{ vPiezas }}" as="f" hint-placeholder-count="7">
+                <button onClick="{{ f.ir }}" style="{{ f.mini }}">{{ f.num }}</button>
+              </sc-for>
+              <span style="margin-left: auto; flex: 0 0 auto; padding-left: 12px; font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 0.14em; color: var(--zn-texto-60);">{{ vContador }}</span>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ esPresentacion }}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div onPointerDown="{{ vTocar }}" onPointerUp="{{ vSoltar }}" style="touch-action: pan-y; position: relative; aspect-ratio: 16 / 9; border-radius: 13px; overflow: hidden; background: var(--zn-hueco); border: 1px solid rgba(255,255,255,0.08);">
+              <div role="img" aria-label="{{ vHint }}" style="{{ vFondo }}"></div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+              <div style="flex: 1 1 220px; display: flex; gap: 5px; min-width: 0;">
+                <sc-for list="{{ vPiezas }}" as="f" hint-placeholder-count="8">
+                  <button onClick="{{ f.ir }}" aria-label="{{ f.etiqueta }}" style="{{ f.seg }}"></button>
+                </sc-for>
+              </div>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 0.14em; color: var(--zn-texto-60);">{{ vContador }}</span>
+                <button onClick="{{ anterior }}" style="{{ btnNav }}">Anterior</button>
+                <button onClick="{{ siguiente }}" style="{{ btnNavFuerte }}">Siguiente</button>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ esReel }}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; flex-wrap: wrap; gap: clamp(16px, 2.6vw, 30px);">
+            <div onPointerDown="{{ vTocar }}" onPointerUp="{{ vSoltar }}" style="touch-action: pan-y; position: relative; flex: 0 0 auto; width: clamp(190px, 46vw, 262px); aspect-ratio: 9 / 16; border-radius: 15px; overflow: hidden; background: var(--zn-hueco); border: 1px solid rgba(255,255,255,0.08);">
+              <div role="img" aria-label="{{ vHint }}" style="{{ vFondo }}"></div>
+              <div style="position: absolute; top: 10px; left: 10px; right: 10px; display: flex; gap: 4px; pointer-events: none;">
+                <sc-for list="{{ vPiezas }}" as="f" hint-placeholder-count="4">
+                  <span style="{{ f.barra }}"></span>
+                </sc-for>
+              </div>
+              <div style="position: absolute; left: 12px; bottom: 12px; display: flex; align-items: center; justify-content: center; width: 46px; height: 46px; border-radius: 999px; background: var(--zn-pastilla); border: 1px solid var(--zn-borde-fuerte); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); pointer-events: none;">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="var(--zn-texto)"><path d="M9 6.5v11l9-5.5z"></path></svg>
+              </div>
+            </div>
+            <div style="flex: 1 1 230px; min-width: 0; display: flex; flex-direction: column; gap: 14px;">
+              <div style="display: flex; flex-wrap: wrap; gap: 7px;">
+                <sc-for list="{{ vChips }}" as="ch" hint-placeholder-count="2">
+                  <span style="border-radius: 999px; padding: 6px 12px; font-size: 11px; letter-spacing: 0.06em; color: var(--zn-texto-72); background: var(--zn-borde); border: 1px solid var(--zn-borde);">{{ ch }}</span>
+                </sc-for>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                <sc-for list="{{ vPiezas }}" as="f" hint-placeholder-count="4">
+                  <button onClick="{{ f.ir }}" style="{{ f.fila }}">
+                    <span style="font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 0.14em; opacity: 0.7;">{{ f.num }}</span>
+                    <span style="font-size: 13px;">{{ f.etiqueta }}</span>
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ esCine }}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; flex-direction: column; gap: 15px;">
+            <div onPointerDown="{{ vTocar }}" onPointerUp="{{ vSoltar }}" style="touch-action: pan-y; position: relative; aspect-ratio: 16 / 9; border-radius: 13px; overflow: hidden; background: var(--zn-hueco); border: 1px solid rgba(255,255,255,0.08);">
+              <div role="img" aria-label="{{ vHint }}" style="{{ vFondo }}"></div>
+              <div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: center; gap: 13px; padding: 30px 16px 14px; background: linear-gradient(180deg, rgba(5,8,15,0) 0%, rgba(5,8,15,0.75) 100%); pointer-events: none;">
+                <span style="display: flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 34px; height: 34px; border-radius: 999px; background: var(--zn-pastilla); border: 1px solid var(--zn-borde-fuerte);">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--zn-texto)"><path d="M9 6.5v11l9-5.5z"></path></svg>
+                </span>
+                <div style="flex: 1; height: 3px; border-radius: 2px; background: var(--zn-borde-fuerte);">
+                  <div style="{{ vBarra }}"></div>
+                </div>
+                <span style="font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 0.14em; color: var(--zn-texto-72);">{{ vContador }}</span>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 7px;">
+              <sc-for list="{{ vPiezas }}" as="f" hint-placeholder-count="5">
+                <button onClick="{{ f.ir }}" style="{{ f.fila }}">
+                  <span style="font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 0.14em; opacity: 0.7;">{{ f.num }}</span>
+                  <span style="font-size: 13px;">{{ f.etiqueta }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+      </div>
+    </div>
+  </div>
+</sc-if>
+<!-- ───────── Footer ───────── -->
+</x-dc>
+
+<!-- ═════════ Ver todo ═════════
+     Vive FUERA del componente a propósito. El markup de los módulos
+     está fijo por categoría dentro de <x-dc>, así que meter la rejilla
+     ahí obligaría a duplicarla y una quinta categoría se quedaría sin
+     ella. Aquí se construye sola a partir de los datos, sea cual sea
+     el número de categorías, y React no la vuelve a dibujar. -->
+<section id="zn-todo" class="zn-todo" hidden aria-labelledby="zn-todo-titulo"></section>
+
+<!-- Visor propio de la rejilla. El del componente es estado interno de
+     React y no se puede abrir desde fuera sin pelearse con él. -->
+<div id="zn-caja" class="zn-caja" hidden role="dialog" aria-modal="true" aria-label="Imágenes del trabajo">
+  <button id="zn-caja-cerrar" class="zn-caja-cerrar" aria-label="Cerrar">✕</button>
+  <div class="zn-caja-cuerpo">
+    <header class="zn-caja-cab">
+      <span id="zn-caja-etiqueta" class="zn-caja-etiqueta"></span>
+      <h3 id="zn-caja-nombre"></h3>
+      <p id="zn-caja-nota"></p>
+      <a id="zn-caja-ficha" class="zn-caja-ficha" href="#">Ver la ficha completa ↗</a>
+    </header>
+    <div id="zn-caja-tira" class="zn-caja-tira"></div>
+  </div>
+</div>
+<!-- ───────── Fondo cosmos ───────── -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="nebula-noise" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.009 0.013" numOctaves="3" seed="3" stitchTiles="stitch"/>
+      <feColorMatrix type="matrix" values="0.45 0 0 0 0.30  0.20 0 0 0 0.20  0.85 0 0 0 0.45  0 0 0 0.55 -0.18"/>
+    </filter>
+    <filter id="nebula-noise-2" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="9" stitchTiles="stitch"/>
+      <feColorMatrix type="matrix" values="0.85 0 0 0 0.45  0.40 0 0 0 0.20  0.75 0 0 0 0.40  0 0 0 0.55 -0.32"/>
+    </filter>
+  </defs>
+</svg>
+<div class="cosmos-bg" aria-hidden="true">
+  <div class="cosmos-layer" id="layer-clouds">
+    <div class="nebula-cloud cloud-periwinkle-1"></div>
+    <div class="nebula-cloud cloud-violet-1"></div>
+    <div class="nebula-cloud cloud-violet-2"></div>
+    <div class="nebula-cloud cloud-magenta-1"></div>
+    <div class="nebula-cloud cloud-magenta-2"></div>
+    <div class="nebula-cloud cloud-cursor" id="cloud-cursor"></div>
+  </div>
+  <div class="cosmos-layer" id="layer-filaments">
+    <div class="filament filament-1"></div>
+    <div class="filament filament-2"></div>
+    <div class="filament filament-3"></div>
+  </div>
+  <svg class="cosmos-layer layer-noise" id="layer-noise" preserveAspectRatio="none">
+    <rect width="100%" height="100%" filter="url(#nebula-noise)"/>
+    <rect width="100%" height="100%" filter="url(#nebula-noise-2)" opacity="0.7"/>
+  </svg>
+  <div class="cosmos-layer" id="layer-stars"></div>
+  <div class="cosmos-layer" id="layer-drift-stars"></div>
+</div>
+
+<!-- ───────── Cursor ───────── -->
+<div class="cursor" id="cursor" aria-hidden="true">
+  <svg viewBox="-50 -50 100 100"><path d="M0,-50 C2,-18 6,-6 50,0 C6,6 2,18 0,50 C-2,18 -6,6 -50,0 C-6,-6 -2,-18 0,-50 Z"/></svg>
+</div>
+
+<!-- ───────── Theme Toggle ───────── -->
+<button class="theme-toggle" id="theme-toggle" aria-label="Cambiar tema" type="button">
+  <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+  </svg>
+  <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="12" cy="12" r="4"/>
+    <line x1="12" y1="2" x2="12" y2="4"/>
+    <line x1="12" y1="20" x2="12" y2="22"/>
+    <line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/>
+    <line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/>
+    <line x1="2" y1="12" x2="4" y2="12"/>
+    <line x1="20" y1="12" x2="22" y2="12"/>
+    <line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/>
+    <line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/>
+  </svg>
+</button>
+
+<!-- ───────── NAV — Liquid Glass ───────── -->
+<nav class="nav" id="nav" aria-label="Principal">
+  <div class="nav-glass">
+    <button class="nav-burger" id="nav-burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span></button>
+    <span class="nav-link is-active" aria-current="page">Portafolio</span>
+    <a href="https://zenithestudios.com/servicios.html" class="nav-link" data-cursor>Servicios</a>
+    <a href="https://zenithestudios.com/" class="nav-icon" id="nav-icon" data-cursor aria-label="Inicio Zenith">
+      <img class="nav-icon-img nav-icon-img-light" src="data:image/png;base64,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" alt="" aria-hidden="true">
+      <img class="nav-icon-img nav-icon-img-dark" src="data:image/png;base64,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" alt="" aria-hidden="true">
+    </a>
+    <a href="https://zenithestudios.com/nosotros.php"  class="nav-link" data-cursor>Nosotros</a>
+    <a href="https://zenithestudios.com/contacto.html" class="nav-link" data-cursor>Contacto</a>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <a href="https://zenithestudios.com/" class="mobile-menu-link">Inicio</a>
+  <span class="mobile-menu-link is-active" aria-current="page">Portafolio</span>
+  <a href="https://zenithestudios.com/servicios.html" class="mobile-menu-link">Servicios</a>
+  <a href="https://zenithestudios.com/nosotros.php" class="mobile-menu-link">Nosotros</a>
+  <a href="https://zenithestudios.com/contacto.html" class="mobile-menu-link">Contacto</a>
+  <div class="mobile-menu-foot">
+    <a href="https://zenithestudios.com/contacto.html#brief" class="mobile-menu-cta">Cuéntanos tu proyecto →</a>
+    <a href="mailto:contacto@zenithestudios.com" class="mobile-menu-mail">contacto@zenithestudios.com</a>
+  </div>
+</div>
+
+<footer class="zn-foot">
+  <nav class="zn-foot-nav" aria-label="Pie de página">
+    <a href="https://zenithestudios.com/">Inicio</a>
+    <a href="/">Portafolio</a>
+    <a href="https://zenithestudios.com/servicios.html">Servicios</a>
+    <a href="https://zenithestudios.com/nosotros.php">Nosotros</a>
+    <a href="https://zenithestudios.com/contacto.html">Contacto</a>
+  </nav>
+  <div class="zn-foot-social">
+    <a href="https://www.instagram.com/zenithmktdg" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+    </a>
+    <a href="https://www.tiktok.com/@zenith.marketing87" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+      <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/company/zenith-mkt-design/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/people/Zenith-Marketing-Design/61582078451373/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+    </a>
+  </div>
+  <p class="zn-foot-copy">
+    © <span id="zn-anio">2026</span> Zenith Marketing &amp; Design ·
+    <a href="https://zenithestudios.com/aviso-privacidad.html">Aviso de privacidad</a>
+  </p>
+</footer>
+
+<script>
+/* ═══ Detalles compartidos con el resto del sitio ═══ */
+document.getElementById('zn-anio').textContent = new Date().getFullYear();
+
+/* — Toggle de tema — */
+document.getElementById('theme-toggle').addEventListener('click', function () {
+  var cur = document.documentElement.getAttribute('data-theme') || 'light';
+  var next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('zenith-theme', next); } catch (e) {}
+});
+
+/* — Menú móvil — */
+(function () {
+  var btn = document.getElementById('nav-burger');
+  var menu = document.getElementById('mobile-menu');
+  if (!btn || !menu) return;
+  var lastFocus = null;
+  function open() {
+    lastFocus = document.activeElement;
+    menu.classList.add('is-open'); menu.setAttribute('aria-hidden', 'false');
+    btn.setAttribute('aria-expanded', 'true'); btn.setAttribute('aria-label', 'Cerrar menú');
+    document.body.classList.add('menu-open');
+    var f = menu.querySelector('.mobile-menu-link');
+    if (f) setTimeout(function () { f.focus(); }, 60);
+  }
+  function close() {
+    menu.classList.remove('is-open'); menu.setAttribute('aria-hidden', 'true');
+    btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('aria-label', 'Abrir menú');
+    document.body.classList.remove('menu-open');
+    if (lastFocus) lastFocus.focus();
+  }
+  btn.addEventListener('click', function () {
+    btn.getAttribute('aria-expanded') === 'true' ? close() : open();
+  });
+  menu.addEventListener('click', function (e) { if (e.target.closest('a')) close(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') close();
+  });
+  window.matchMedia('(min-width:681px)').addEventListener('change', function (ev) {
+    if (ev.matches && btn.getAttribute('aria-expanded') === 'true') close();
+  });
+})();
+
+/* — Campo de estrellas — */
+(function () {
+  var capa = document.getElementById('layer-stars');
+  if (!capa) return;
+  var movil = window.matchMedia('(max-width:720px)').matches;
+  var n = movil ? 60 : 130;
+  var frag = document.createDocumentFragment();
+  for (var i = 0; i < n; i++) {
+    var s = document.createElement('div');
+    s.className = 'star-dot' + (Math.random() < 0.18 ? ' warm' : '');
+    var t = (0.8 + Math.random() * 2.4).toFixed(2);
+    s.style.width = s.style.height = t + 'px';
+    s.style.left = (Math.random() * 100).toFixed(2) + '%';
+    s.style.top = (Math.random() * 100).toFixed(2) + '%';
+    s.style.setProperty('--so', (0.25 + Math.random() * 0.65).toFixed(2));
+    s.style.setProperty('--tw', (3 + Math.random() * 5).toFixed(1) + 's');
+    s.style.setProperty('--td', (Math.random() * 6).toFixed(1) + 's');
+    frag.appendChild(s);
+  }
+  capa.appendChild(frag);
+})();
+
+/* — Estrellas errantes — se pausan con la pestaña oculta — */
+(function () {
+  var capa = document.getElementById('layer-drift-stars');
+  if (!capa) return;
+  function nacer() {
+    if (document.hidden) return;
+    var e = document.createElement('div');
+    e.className = 'drift-star';
+    var w = window.innerWidth, h = window.innerHeight;
+    var d = Math.hypot(w, h) * 1.3, a = Math.random() * Math.PI * 2;
+    var borde = Math.floor(Math.random() * 4), sx, sy;
+    if (borde === 0) { sx = -30; sy = Math.random() * h; }
+    else if (borde === 1) { sx = w + 30; sy = Math.random() * h; }
+    else if (borde === 2) { sx = Math.random() * w; sy = -30; }
+    else { sx = Math.random() * w; sy = h + 30; }
+    var dur = 35 + Math.random() * 45, t = 1.2 + Math.random() * 2.2;
+    e.style.cssText = 'left:' + sx.toFixed(0) + 'px;top:' + sy.toFixed(0) + 'px;' +
+      'width:' + t.toFixed(1) + 'px;height:' + t.toFixed(1) + 'px;' +
+      '--tx:' + (Math.cos(a) * d).toFixed(0) + 'px;--ty:' + (Math.sin(a) * d).toFixed(0) + 'px;' +
+      '--peak:' + (0.45 + Math.random() * 0.45).toFixed(2) + ';animation-duration:' + dur.toFixed(1) + 's;';
+    capa.appendChild(e);
+    setTimeout(function () { e.remove(); }, dur * 1000 + 200);
+  }
+  for (var i = 0; i < 4; i++) setTimeout(nacer, i * 1200);
+  var reloj = setInterval(nacer, 7000);
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) { clearInterval(reloj); reloj = null; }
+    else if (!reloj) reloj = setInterval(nacer, 7000);
+  });
+})();
+
+/* — Reflejo especular del logo, siguiendo al cursor — */
+(function () {
+  var icono = document.getElementById("nav-icon");
+  if (!icono) return;
+  var lx = 30, ly = 25, mX = innerWidth / 2, mY = innerHeight / 2, raf = null;
+  document.addEventListener("mousemove", function (e) {
+    mX = e.clientX; mY = e.clientY;
+    if (!raf) raf = requestAnimationFrame(paso);
+  }, { passive: true });
+  function paso() {
+    var r = icono.getBoundingClientRect();
+    var maxD = Math.hypot(innerWidth, innerHeight) / 2;
+    var nx = Math.max(-1, Math.min(1, (mX - (r.left + r.width / 2)) / maxD * 1.4));
+    var ny = Math.max(-1, Math.min(1, (mY - (r.top + r.height / 2)) / maxD * 1.4));
+    var tx = 50 + nx * 55, ty = 50 + ny * 55;
+    lx += (tx - lx) * 0.1; ly += (ty - ly) * 0.1;
+    icono.style.setProperty("--lx", lx.toFixed(1) + "%");
+    icono.style.setProperty("--ly", ly.toFixed(1) + "%");
+    raf = (Math.abs(tx - lx) > 0.2 || Math.abs(ty - ly) > 0.2) ? requestAnimationFrame(paso) : null;
+  }
+  paso();
+})();
+
+/* — Cursor + parallax de capas — se detiene en reposo — */
+(function () {
+  if (window.matchMedia('(hover:none)').matches) return;
+  var cur = document.getElementById('cursor');
+  var blob = document.getElementById('cloud-cursor');
+  if (!cur) return;
+  var capas = [
+    { el: document.getElementById('layer-noise'), d: 0.15, x: 0, y: 0 },
+    { el: document.getElementById('layer-clouds'), d: 0.35, x: 0, y: 0 },
+    { el: document.getElementById('layer-filaments'), d: 0.6, x: 0, y: 0 },
+    { el: document.getElementById('layer-stars'), d: 0.9, x: 0, y: 0 },
+    { el: document.getElementById('layer-drift-stars'), d: 1.2, x: 0, y: 0 }
+  ].filter(function (l) { return l.el; });
+
+  var mx = innerWidth / 2, my = innerHeight / 2;
+  var cx = mx, cy = my, lx = mx, ly = my, rafId = null;
+
+  document.addEventListener('mousemove', function (e) {
+    mx = e.clientX; my = e.clientY;
+    if (!rafId) rafId = requestAnimationFrame(tick);
+  }, { passive: true });
+
+  function tick() {
+    var ox = mx - innerWidth / 2, oy = my - innerHeight / 2, vivo = false;
+    cx += (mx - cx) * 0.18; cy += (my - cy) * 0.18;
+    var hov = cur.classList.contains('hover');
+    cur.style.transform = 'translate(' + cx + 'px,' + cy + 'px) translate(-50%,-50%) scale(' +
+      (hov ? 2.4 : 1) + ') rotate(' + (hov ? 45 : 0) + 'deg)';
+    if (Math.abs(mx - cx) > 0.3 || Math.abs(my - cy) > 0.3) vivo = true;
+    if (blob) {
+      lx += (mx - lx) * 0.045; ly += (my - ly) * 0.045;
+      blob.style.transform = 'translate3d(' + lx + 'px,' + ly + 'px,0) translate(-50%,-50%)';
+      if (Math.abs(mx - lx) > 0.5 || Math.abs(my - ly) > 0.5) vivo = true;
+    }
+    capas.forEach(function (l) {
+      var tx = -ox * l.d * 0.025, ty = -oy * l.d * 0.025;
+      l.x += (tx - l.x) * 0.06; l.y += (ty - l.y) * 0.06;
+      l.el.style.transform = 'translate3d(' + l.x.toFixed(2) + 'px,' + l.y.toFixed(2) + 'px,0)';
+      if (Math.abs(tx - l.x) > 0.1 || Math.abs(ty - l.y) > 0.1) vivo = true;
+    });
+    /* En reposo el bucle se apaga: no gasta batería mientras nadie mueve el ratón. */
+    rafId = vivo ? requestAnimationFrame(tick) : null;
+  }
+  tick();
+  document.addEventListener('mouseover', function (e) {
+    if (e.target.closest('a,button,[data-cursor]')) cur.classList.add('hover');
+  });
+  document.addEventListener('mouseout', function (e) {
+    if (e.target.closest('a,button,[data-cursor]')) cur.classList.remove('hover');
+  });
+})();
+</script>
+
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1340,&quot;height&quot;:1160}}">
+/* Cuatro barajas, una sola máquina por grupo. Dos reglas:
+   · carta elegida → siempre al centro; las demás se reparten alrededor
+     (geo.anillo = true en zn-estado.js)
+   · categoría elegida → siempre a la posición principal; las demás se
+     reordenan alrededor (state.ordenCats + FLIP) */
+/* Categorías, tarjetas y visores viven en zn-contenido.js
+   (window.ZnContenido). Este archivo es solo presentación: si el script
+   aún no cargó, CONT() devuelve vacío y la vista reintenta. */
+const SIN_DATOS = {
+  grupos: [], proyectos: [], visorPorCategoria: {},
+  visorDe: () => null, deCategoria: () => [], proyecto: () => null
+};
+const CONT = () => (typeof window !== "undefined" && window.ZnContenido) || SIN_DATOS;
+
+/* misma matemática, dos escalas: módulo principal y módulo secundario */
+const GEO_GRANDE = {
+  paso: 218, caida: 24, giro: 5.2, escalaPaso: 0.055, opacidadPaso: 0.05,
+  compresion: 0.9, anillo: true, desvio: 1.4, protaEscala: 0.055,
+  protaAlzado: 16, protaEndereza: 0.6, retroAlzado: 6, retroEscala: 0.014,
+  hoverAlzado: 7, hoverEscala: 0.02
+};
+const GEO_CHICA = {
+  paso: 44, caida: 10, giro: 5.6, escalaPaso: 0.05, opacidadPaso: 0.06,
+  compresion: 0.9, anillo: true, limite: 90, desvio: 1.2, protaEscala: 0.05,
+  protaAlzado: 8, protaEndereza: 0.65, retroAlzado: 3, retroEscala: 0.012,
+  hoverAlzado: 5, hoverEscala: 0.018
+};
+
+/* medidas base + referencia de ancho: por debajo de `ref` todo el módulo
+   se reduce proporcionalmente hasta `minF`. Así el mismo componente sirve
+   en escritorio, tablet y celular sin puntos de quiebre. */
+const MEDIDA = {
+  /* `pista` es el alto reservado al abanico. Estaba sobrado: medido en
+     móvil sobraban 74px muertos debajo del módulo grande y 42 en los
+     pequeños, mientras las tarjetas desbordan por ARRIBA (el alzado del
+     protagonista), que es hacia donde sí hace falta sitio. */
+  grande: { w: 272, h: 404, r: 21, pista: 466, padY: 22, padX: 24,
+            badge: 10, pags: 10, nombre: 27, titulo: 34 },
+  chica:  { w: 152, h: 216, r: 16, pista: 250, padY: 15, padX: 16,
+            badge: 8,  pags: 8,  nombre: 17, titulo: 27 }
+};
+/* El factor lo fija SIEMPRE el módulo principal: los secundarios heredan
+   esa misma escala (capada por su propio ancho), así la razón 272/152 ≈ 1.8
+   entre principal y secundario se mantiene en cualquier pantalla. */
+const REF_PRINCIPAL = 560, MIN_PRINCIPAL = 0.6, REF_SECUNDARIO = 330;
+
+/* Visor: solo la carta protagonista (la de enmedio) del módulo principal
+   lo abre. El tipo de contenedor lo define cada tarjeta en
+   zn-contenido.js, así el contenido cambia de forma según lo que es. */
+const ETIQUETA_TIPO = { mosaico: "Galería", carrusel: "Carrusel", presentacion: "Presentación", reel: "Reel vertical", cine: "Video" };
+const NOMBRE_PIEZA = { mosaico: "Foto", carrusel: "Imagen", presentacion: "Lámina", reel: "Escena", cine: "Capítulo" };
+const ANCHO_VISOR = { mosaico: 1060, carrusel: 900, presentacion: 1060, reel: 820, cine: 1000 };
+/* Mosaico: mismo ritmo (una pieza mayor + secundarias) en 6, 4 y 2
+   columnas, según el ancho de ventana. [columnas, filas] por pieza. */
+const REJILLA = {
+  6: [[4, 2], [2, 1], [2, 1], [2, 1], [2, 1], [2, 1]],
+  4: [[4, 2], [2, 1], [2, 1], [2, 1], [2, 1], [4, 1]],
+  2: [[2, 2], [1, 1], [1, 1], [1, 1], [1, 1], [2, 1]]
+};
+
+/* Fondo de una pieza del visor. Las imagenes vienen de uploads/ en
+   Hostinger (via portafolio-datos.php), no del sidecar del editor:
+   en produccion aquel era de solo lectura. Sin imagen devuelve el
+   hueco vacio, que es un estado legitimo mientras se carga contenido. */
+const PIEZA_BASE = "position: absolute; inset: 0; background-size: cover;"
+  + " background-repeat: no-repeat; background-color: var(--zn-hueco);";
+/* Fondo de una tarjeta del abanico.
+
+   Usa la portada ligera (~28 KB), no la del visor (~82 KB): en pantalla
+   hay varias tarjetas a la vez y esa diferencia se nota al cargar.
+
+   El velo oscuro no es decorativo: el nombre y la etiqueta van encima
+   de la foto, y sin él una imagen clara los deja ilegibles. Es más
+   denso abajo, que es donde se apoya el nombre. */
+function fondoTarjeta(proyecto) {
+  const url = proyecto && proyecto.portada;
+  if (!url) return `background-image: ${RAYADO};`;
+  const velo = "linear-gradient(to top, rgba(0,0,0,.74) 0%,"
+             + " rgba(0,0,0,.28) 38%, rgba(0,0,0,.12) 62%, rgba(0,0,0,.42) 100%)";
+  return `background-image: ${velo}, url('${String(url).replace(/'/g, "%27")}');`
+       + ` background-size: cover; background-position: center;`;
+}
+
+function fondoPieza(pieza) {
+  if (!pieza || !pieza.url) return PIEZA_BASE;
+  return PIEZA_BASE + ` background-image: url('${String(pieza.url).replace(/'/g, "%27")}');`
+    + ` background-position: ${pieza.foco || "50% 50%"};`;
+}
+
+const RAYADO = "repeating-linear-gradient(135deg, var(--zn-rayado) 0 9px, rgba(255,255,255,0) 9px 18px)";
+const CURVA = "cubic-bezier(0.16, 1, 0.3, 1)";
+const MORFO = 700;   // ms de la promoción de categoría
+
+class Component extends DCLogic {
+  state = { v: 0, anchos: {}, vp: 0, ordenCats: null, visor: null, indice: 0 };
+
+  secs = {};
+  pistas = {};
+
+  grupos() { return CONT().grupos; }
+  proyecto(id) { return CONT().proyecto(id); }
+  visorDef(id) { return id ? CONT().visorDe(id) : null; }
+
+  /* orden de módulos, tolerante a categorías agregadas o quitadas
+     en zn-contenido.js después del primer render */
+  orden() {
+    const ids = this.grupos().map((g) => g.id);
+    const o = this.state.ordenCats;
+    if (!o) return ids;
+    const vivos = o.filter((x) => ids.indexOf(x) >= 0);
+    ids.forEach((x) => { if (vivos.indexOf(x) < 0) vivos.push(x); });
+    return vivos;
+  }
+
+  abrirVisor = (id) => {
+    if (typeof document !== "undefined") document.body.style.overflow = "hidden";
+    this.setState({ visor: id, indice: 0 });
+  };
+
+  cerrarVisor = () => {
+    if (typeof document !== "undefined") document.body.style.overflow = "";
+    this.setState({ visor: null, indice: 0 });
+  };
+
+  mover = (d) => {
+    const def = this.visorDef(this.state.visor);
+    if (!def) return;
+    this.setState((s) => ({ indice: (s.indice + d + def.piezas) % def.piezas }));
+  };
+
+  visorVals() {
+    const out = {
+      visorAbierto: false, esMosaico: false, esCarrusel: false,
+      esPresentacion: false, esReel: false, esCine: false,
+      cerrarVisor: this.cerrarVisor, tragar: (e) => e.stopPropagation(),
+      siguiente: () => this.mover(1), anterior: () => this.mover(-1),
+      vPiezas: [], vChips: []
+    };
+    const id = this.state.visor;
+    const p = id && this.proyecto(id);
+    const def = this.visorDef(id);
+    if (!p || !def) return out;
+
+    const g = this.grupos().find((x) => x.id === p.categoria);
+    const a = g ? g.acento : "138,180,248";
+    const n = def.piezas;
+    const i = Math.max(0, Math.min(this.state.indice, n - 1));
+    const vp = this.state.vp || (typeof window !== "undefined" ? window.innerWidth : 1200);
+    const cols = vp < 560 ? 2 : vp < 900 ? 4 : 6;
+    const rej = REJILLA[cols];
+    const c = vp < 480 ? 18 : 26;
+    const poly = `polygon(${c}px 0, calc(100% - ${c}px) 0, 100% ${c}px,`
+      + ` 100% calc(100% - ${c}px), calc(100% - ${c}px) 100%, ${c}px 100%,`
+      + ` 0 calc(100% - ${c}px), 0 ${c}px)`;
+    const flecha = (lado) => `position: absolute; ${lado}: 12px; top: 50%; transform: translateY(-50%);`
+      + " display: flex; align-items: center; justify-content: center; width: 44px; height: 44px;"
+      + " border-radius: 999px; cursor: pointer; color: var(--zn-texto);"
+      + " background: var(--zn-pastilla); border: 1px solid var(--zn-borde-fuerte);"
+      + " backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);";
+
+    Object.assign(out, {
+      visorAbierto: true,
+      esMosaico: def.tipo === "mosaico",
+      esCarrusel: def.tipo === "carrusel",
+      esPresentacion: def.tipo === "presentacion",
+      esReel: def.tipo === "reel",
+      esCine: def.tipo === "cine",
+      visorNombre: p.nombre,
+      visorRed: p.red,
+      visorPags: p.pags,
+      visorTipo: ETIQUETA_TIPO[def.tipo],
+      visorNota: def.nota,
+      vChips: def.chips || [],
+      /* Galería justificada: todas las fotos de una fila miden lo mismo
+         de alto y la fila llena el ancho. Cada celda tiene la proporción
+         REAL de su foto, así que `cover` no recorta nada. Antes era una
+         rejilla con patrón fijo (celdas 2×2 y 1×1 de alto fijo): a una
+         foto 3:2 le cortaba la cabeza o los pies y, según cuántas fotos
+         hubiera, dejaba huecos. */
+      vRejilla: "display: flex; flex-wrap: wrap; gap: 10px;",
+      vTocar: (e) => { this._gx = e.clientX; },
+      vSoltar: (e) => {
+        if (this._gx == null) return;
+        const dx = e.clientX - this._gx;
+        this._gx = null;
+        if (Math.abs(dx) > 44) this.mover(dx < 0 ? 1 : -1);
+      },
+      vSlot: `zn-${id}-${i + 1}`,
+      vFondo: fondoPieza(CONT().piezaDe ? CONT().piezaDe(id, i + 1) : null),
+      vHint: `${NOMBRE_PIEZA[def.tipo]} ${i + 1} de ${n}`,
+      vContador: `${String(i + 1).padStart(2, "0")} / ${String(n).padStart(2, "0")}`,
+      vBarra: `width: ${Math.round(((i + 1) / n) * 100)}%; height: 100%; border-radius: 2px;`
+        + ` background: rgba(${a},0.95); transition: width 280ms ${CURVA};`,
+      visorBadge: (p.red ? "" : "display: none; ")
+        + `border-radius: 999px; padding: 6px 13px; font-size: 10px; letter-spacing: 0.2em;`
+        + ` text-transform: uppercase; color: var(--zn-texto-90);`
+        + ` background: rgba(${a},0.14); border: 1px solid rgba(${a},0.42);`,
+      visorMarco: `position: relative; box-sizing: border-box; display: flex; flex-direction: column;`
+        + ` width: 100%; min-height: 0; max-height: 100%;`
+        + ` max-width: ${ANCHO_VISOR[def.tipo] || 1000}px; padding: 1px;`
+        + ` background: linear-gradient(150deg, rgba(${a},0.6) 0%, rgba(${a},0.14) 46%, var(--zn-borde) 100%);`
+        + ` clip-path: ${poly}; animation: znPanel 460ms ${CURVA} both;`,
+      visorInterior: `position: relative; box-sizing: border-box; clip-path: ${poly}; background: var(--zn-marco);`
+        + ` padding: clamp(20px, 3vw, 34px); padding-right: clamp(14px, 2.2vw, 24px);`
+        + ` flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden;`
+        + ` overscroll-behavior: contain;`,
+      flechaIzq: flecha("left"),
+      flechaDer: flecha("right"),
+      btnNav: "padding: 9px 15px; border-radius: 999px; cursor: pointer; font: inherit; font-size: 12px;"
+        + " color: var(--zn-texto-72); background: var(--zn-borde);"
+        + " border: 1px solid var(--zn-borde);",
+      btnNavFuerte: `padding: 9px 15px; border-radius: 999px; cursor: pointer; font: inherit; font-size: 12px;`
+        + ` color: var(--zn-fondo); background: rgba(${a},0.92); border: 1px solid rgba(${a},0.95);`,
+      vPiezas: Array.from({ length: n }, (_, k) => {
+        const act = k === i;
+        const num = String(k + 1).padStart(2, "0");
+        return {
+          slot: `zn-${id}-${k + 1}`,
+          fondo: fondoPieza(CONT().piezaDe ? CONT().piezaDe(id, k + 1) : null),
+          hint: `${NOMBRE_PIEZA[def.tipo]} ${k + 1} de ${n}`,
+          etiqueta: `${NOMBRE_PIEZA[def.tipo]} ${num}`,
+          num,
+          ir: () => this.setState({ indice: k }),
+          celda: (() => {
+            /* flex-grow proporcional a la proporción: en cada fila todas
+               crecen lo justo para quedar a la misma altura. */
+            const pz = CONT().piezaDe ? CONT().piezaDe(id, k + 1) : null;
+            const ar = pz && pz.ancho && pz.alto ? pz.ancho / pz.alto : 1.5;
+            const alto = vp < 560 ? 130 : vp < 900 ? 170 : 210;
+            return `flex: ${ar.toFixed(4)} 1 ${Math.round(ar * alto)}px; aspect-ratio: ${ar.toFixed(4)};`
+              + " position: relative; overflow: hidden; border-radius: 10px;"
+              + " background: var(--zn-hueco); border: 1px solid var(--zn-borde);";
+          })(),
+          mini: `flex: 0 0 auto; width: 60px; height: 42px; border-radius: 8px; cursor: pointer;`
+            + ` font-family: ui-monospace, monospace; font-size: 10px; letter-spacing: 0.12em;`
+            + ` color: ${act ? "var(--zn-fondo)" : "var(--zn-texto-60)"};`
+            + ` background: ${act ? `rgba(${a},0.92)` : "var(--zn-borde)"};`
+            + ` border: 1px solid ${act ? `rgba(${a},0.95)` : "var(--zn-borde)"};`
+            + ` transition: background 200ms ease, color 200ms ease, border-color 200ms ease;`,
+          seg: `flex: 1 1 0; min-width: 0; height: 3px; padding: 0; border: 0; border-radius: 2px; cursor: pointer;`
+            + ` background: ${k <= i ? `rgba(${a},0.9)` : "rgba(255,255,255,0.13)"};`
+            + ` transition: background 240ms ease;`,
+          barra: `flex: 1 1 0; height: 2px; border-radius: 2px;`
+            + ` background: ${k <= i ? "rgba(255,255,255,0.92)" : "var(--zn-borde-fuerte)"};`,
+          fila: `display: flex; align-items: center; gap: 11px; width: 100%; text-align: left; cursor: pointer;`
+            + ` padding: 10px 13px; border-radius: 9px; font: inherit;`
+            + ` color: ${act ? "var(--zn-texto)" : "var(--zn-texto-60)"};`
+            + ` background: ${act ? `rgba(${a},0.12)` : "transparent"};`
+            + ` border: 1px solid ${act ? `rgba(${a},0.4)` : "var(--zn-borde)"};`
+            + ` transition: background 200ms ease, color 200ms ease, border-color 200ms ease;`
+        };
+      })
+    });
+    return out;
+  }
+
+  /* medidas resueltas contra el ancho real del módulo */
+  medidas(id, grande) {
+    const b = grande ? MEDIDA.grande : MEDIDA.chica;
+    const wP = this.state.anchos[this.principal()];
+    const base = wP ? Math.max(MIN_PRINCIPAL, Math.min(1, wP / REF_PRINCIPAL)) : 1;
+    const w = this.state.anchos[id];
+    const f = grande ? base : Math.min(base, w ? w / REF_SECUNDARIO : 1);
+    const n = (v, piso) => Math.max(piso || 0, Math.round(v * f));
+    return {
+      f, w: n(b.w), h: n(b.h), r: n(b.r), pista: n(b.pista),
+      pad: `${n(b.padY)}px ${n(b.padX)}px ${n(b.padY + 4)}px`,
+      /* Suelos de legibilidad. Antes eran 8px: en un móvil de 390px el
+         factor de escala baja a 0,6 y la etiqueta quedaba ilegible. */
+      badge: n(b.badge, 10) + "px", pags: n(b.pags, 10) + "px",
+      nombre: n(b.nombre, 15) + "px", titulo: n(b.titulo, 20) + "px"
+    };
+  }
+
+  maquinas() {
+    const listo = typeof window !== "undefined" && window.ZnEstado && this.grupos().length;
+    if (!this._m && listo) {
+      this._m = {};
+      this.grupos().forEach((g) => {
+        const m = window.ZnEstado.crearMaquina({
+          /* Sólo los primeros del orden. Con más de cinco el abanico
+             los apila unos detrás de otros: medido con once, seis
+             quedaban al 0 % de visibilidad. El resto vive en la
+             rejilla «Ver todo», que se monta fuera del componente. */
+          proyectos: CONT().deCategoriaAbanico
+            ? CONT().deCategoriaAbanico(g.id)
+            : CONT().deCategoria(g.id),
+          categorias: [{ id: g.id, etiqueta: g.nombre }],
+          categoria: g.id,
+          baraja: g.id,
+          geometria: g.id === "contenido" ? GEO_GRANDE : GEO_CHICA
+        });
+        const l = m.lista();
+        if (l.length) {
+          m.confirmar(l[Math.floor(l.length / 2)]);
+          m.finalizarTransicion();
+          m.asentar();
+        }
+        m.suscribir(() => this.setState((s) => ({ v: s.v + 1 })));
+        this._m[g.id] = m;
+      });
+    }
+    return this._m;
+  }
+
+  principal() { return this.orden()[0]; }
+
+  /* ---- CATEGORÍAS: la elegida pasa a principal, el resto rota ---- */
+  promover(id) {
+    if (id === this.principal()) return;
+    /* FLIP: se miden las cajas ANTES de que el flex reordene */
+    this.antes = {};
+    Object.keys(this.secs).forEach((k) => {
+      const el = this.secs[k];
+      if (el) this.antes[k] = el.getBoundingClientRect();
+    });
+    const resto = this.orden().filter((x) => x !== id);
+    this.setState({ ordenCats: [id, ...resto] });
+  }
+
+  componentDidUpdate() {
+    this.reubicarModulos();
+    /* Aquí NO se llama a medir(): hacer setState desde componentDidUpdate
+       sin guarda es lo que dispara "Maximum update depth exceeded".
+       Los cambios de ancho ya los notifica el ResizeObserver de
+       componentDidMount, que observa cada pista, más el listener de
+       resize de la ventana. Medir otra vez aquí era redundante. */
+  }
+
+  /* Cada módulo viaja desde donde estaba hasta donde el flex lo puso.
+     Una sola animación por módulo: nada aparece ni desaparece. */
+  reubicarModulos() {
+    if (!this.antes) return;
+    const antes = this.antes;
+    this.antes = null;
+    Object.keys(antes).forEach((k) => {
+      const el = this.secs[k];
+      if (!el) return;
+      const a = antes[k], b = el.getBoundingClientRect();
+      if (!b.width || !a.width) return;
+      const dx = a.left - b.left, dy = a.top - b.top;
+      const sx = a.width / b.width, sy = a.height / b.height;
+      if (Math.abs(dx) < 1 && Math.abs(dy) < 1 && Math.abs(sx - 1) < 0.01 && Math.abs(sy - 1) < 0.01) return;
+      if (el._flip) el._flip.cancel();
+      el._flip = el.animate([
+        { transformOrigin: "0 0", transform: `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})` },
+        { transformOrigin: "0 0", transform: "translate(0px, 0px) scale(1, 1)" }
+      ], { duration: MORFO, easing: CURVA });
+    });
+  }
+
+  medir = () => {
+    const anchos = { ...this.state.anchos };
+    let cambio = false;
+    const vp = typeof window !== "undefined" ? window.innerWidth : 0;
+    if (vp !== this.state.vp) cambio = true;
+    this.grupos().forEach((g) => {
+      const el = this.pistas[g.id];
+      /* Tolerancia de 1px: sin ella, una oscilación de subpíxel entre dos
+         medidas (la barra de scroll que aparece y desaparece, el redondeo
+         del flex) reabre el ciclo medir → setState → medir. */
+      if (el && el.clientWidth && Math.abs(el.clientWidth - (anchos[g.id] || 0)) > 1) {
+        anchos[g.id] = el.clientWidth;
+        cambio = true;
+      }
+    });
+    if (cambio) this.setState({ anchos, vp });
+  };
+
+  componentDidMount() {
+    this.vivo = true;
+    /* zn-estado.js se carga aparte: en una red lenta puede no estar listo
+       en el primer montaje. Se espera sin bloquear el pintado. */
+    if (!this.maquinas()) this.esperarEstado();
+    this.medir();
+    this.teclas = (e) => {
+      if (!this.state.visor) return;
+      if (e.key === "Escape") this.cerrarVisor();
+      else if (e.key === "ArrowRight") this.mover(1);
+      else if (e.key === "ArrowLeft") this.mover(-1);
+    };
+    window.addEventListener("keydown", this.teclas);
+    if (typeof ResizeObserver !== "undefined") {
+      this.ro = new ResizeObserver(this.medir);
+      this.grupos().forEach((g) => { if (this.pistas[g.id]) this.ro.observe(this.pistas[g.id]); });
+    }
+    /* el ancho de ventana también manda (rejilla del visor, biseles) */
+    window.addEventListener("resize", this.medir);
+    window.addEventListener("orientationchange", this.medir);
+  }
+
+  esperarEstado(intento) {
+    const i = intento || 0;
+    if (!this.vivo || i > 60) return;
+    this._espera = setTimeout(() => {
+      if (this.maquinas()) this.setState((s) => ({ v: s.v + 1 }));
+      else this.esperarEstado(i + 1);
+    }, 60);
+  }
+
+  componentWillUnmount() {
+    this.vivo = false;
+    if (this._espera) clearTimeout(this._espera);
+    if (this.teclas) window.removeEventListener("keydown", this.teclas);
+    if (typeof document !== "undefined") document.body.style.overflow = "";
+    if (this.ro) this.ro.disconnect();
+    window.removeEventListener("resize", this.medir);
+    window.removeEventListener("orientationchange", this.medir);
+    Object.values(this.secs).forEach((el) => { if (el && el._flip) el._flip.cancel(); });
+    if (this._m) Object.values(this._m).forEach((m) => m.destruir());
+  }
+
+  /* geometría + presupuesto de ancho, resueltos dentro del render */
+  ajustar(m, id, med, grande) {
+    Object.assign(m.geometria, grande ? GEO_GRANDE : GEO_CHICA);
+    const w = this.state.anchos[id];
+    if (!w) return;
+    const geo = m.geometria;
+    const n = Math.max(Math.floor((m.lista().length - 1) / 2), 1);
+    let serie = 0;
+    for (let i = 0; i < n; i++) serie += Math.pow(geo.compresion, i);
+    const r = m.ranura(n);
+    const th = (Math.abs(r.rotacion) + geo.desvio) * Math.PI / 180;
+    /* la tarjeta extrema va rotada y pivota en su base: su caja ocupa más
+       que media tarjeta */
+    const corrimiento = r.escala * (med.h / 2) * Math.sin(th);
+    const bbox = r.escala * (med.w * Math.cos(th) + med.h * Math.sin(th)) / 2;
+    geo.limite = Math.max(0, (w / 2) - corrimiento - bbox);
+    const base = grande ? GEO_GRANDE : GEO_CHICA;
+    geo.paso = Math.max(36, Math.min(base.paso, geo.limite / Math.max(serie, 1)));
+    geo.giro = base.giro * Math.min(1, geo.paso / base.paso + 0.35);
+  }
+
+  marco(acento, grande, f) {
+    const e = f == null ? 1 : f;
+    const c = Math.round((grande ? 26 : 20) * e);
+    const poly = `polygon(${c}px 0, calc(100% - ${c}px) 0, 100% ${c}px, 100% calc(100% - ${c}px), calc(100% - ${c}px) 100%, ${c}px 100%, 0 calc(100% - ${c}px), 0 ${c}px)`;
+    return {
+      exterior: `position: relative; padding: 1px; clip-path: ${poly};`
+        + ` background: linear-gradient(160deg, rgba(${acento},0.95) 0%, rgba(${acento},0.42) 45%, rgba(${acento},0.85) 100%);`
+        + ` box-shadow: 0 30px 90px rgba(${acento},0.07);`,
+      interior: `position: relative; clip-path: ${poly}; background: var(--zn-marco);`
+        + ` padding: ${Math.round((grande ? 18 : 14) * e)}px ${Math.round((grande ? 30 : 18) * e)}px`
+        + ` ${Math.round((grande ? 26 : 20) * e)}px; overflow: hidden;`
+    };
+  }
+
+  contenidoEstilo(c, orden) {
+    const d = c.retardoDe(orden);
+    return `transform: translate(${c.x || 0}px, ${c.y}px); opacity: ${c.opacidad};`
+      + ` transition: transform ${c.duracion}ms ${c.curva} ${d}ms, opacity ${c.duracion}ms ease ${d}ms;`;
+  }
+
+  baraja(id, acento, grande, med) {
+    const m = this._m[id];   /* solo lectura: crearlas aquí sería crear estado durante el render */
+    /* módulos secundarios: barajas quietas. No hay hover ni selección de
+       carta; el clic solo sube la categoría a principal. */
+    const quieto = !grande;
+    this.ajustar(m, id, med, grande);
+    const T = m.tiempos;
+    const n = (v, d) => Number(v.toFixed(d));
+    const rgba = (a) => `rgba(${acento},${a})`;
+
+    return m.composicion().map((t) => {
+      const linea = t.protagonista ? rgba(0.95) : t.apuntada ? rgba(0.55) : rgba(0.26);
+      const halo = t.protagonista ? rgba(0.22) : "rgba(255,255,255,0)";
+      const curva = t.moviendo ? T.curva : T.curvaCorta;
+      return {
+        id: t.id,
+        nombre: t.proyecto.nombre,
+        red: t.proyecto.red,
+        pags: t.proyecto.pags,
+        estilo: [
+          "position: absolute; left: 50%; top: 0; box-sizing: border-box;",
+          `width: ${med.w}px; height: ${med.h}px; border-radius: ${med.r}px;`,
+          "cursor: pointer; will-change: transform; touch-action: manipulation;",
+          "-webkit-tap-highlight-color: transparent; user-select: none;",
+          "backface-visibility: hidden; -webkit-backface-visibility: hidden;",
+          `transform-origin: ${t.pivote};`,
+          `transform: translateX(-50%) translate(${n(t.posicion.x, 2)}px, ${n(t.posicion.y, 2)}px)`
+            + ` rotate(${n(t.rotacion, 3)}deg) scale(${n(t.escala, 4)});`,
+          `z-index: ${t.profundidad}; opacity: ${n(t.opacidad, 3)};`,
+          `border: 1px solid ${linea};`,
+          `box-shadow: 0 ${t.sombra.alcance}px ${t.sombra.difusion}px rgba(0,0,0,${n(t.sombra.alfa, 3)}), 0 0 0 1px ${halo};`,
+          `transition: transform ${t.duracion}ms ${curva} ${t.retardo}ms,`
+            + ` border-color ${t.duracion}ms ease ${t.retardo}ms,`
+            + ` box-shadow ${t.duracion}ms ease ${t.retardo}ms,`
+            + ` opacity ${t.duracion}ms ease ${t.retardo}ms;`
+        ].join(" "),
+        pulso: quieto
+          ? "display: block; width: 100%; height: 100%;"
+          : `display: block; width: 100%; height: 100%; transform-origin: 50% 50%;`
+            + ` transform: scale(${t.pulso}); transition: transform ${t.pulsoDuracion}ms ${t.pulsoCurva};`,
+        /* El texto va al borde que NO tapa la tarjeta vecina.
+           El abanico apila desde el centro: la de la derecha queda
+           cubierta por su izquierda, así que su título se iría debajo.
+           Alineando hacia fuera, cada tarjeta enseña su nombre. */
+        cara: `width: 100%; height: 100%; box-sizing: border-box; border-radius: ${med.r - 1}px;`
+          + ` background-color: var(--zn-carta); ${fondoTarjeta(t.proyecto)}`
+          + ` display: flex; flex-direction: column; justify-content: space-between; padding: ${med.pad};`
+          + (t.rango > 0 ? ` align-items: flex-end; text-align: right;` : ` align-items: flex-start;`),
+        /* max-width + recorte: sin esto una etiqueta larga ("Fotografía",
+           "Instagram") se salía del borde y se leía "INSTAGR…". */
+        badge: `font-size: ${med.badge}; padding: ${grande ? "7px 14px" : "5px 11px"};`
+          + ` max-width: 100%; box-sizing: border-box; overflow: hidden;`
+          + ` text-overflow: ellipsis; white-space: nowrap;`
+          + ` ${this.contenidoEstilo(t.contenido, 0)}`,
+        pagsEstilo: `font-size: ${med.pags}; ${this.contenidoEstilo(t.contenido, 1)}`,
+        nombreEstilo: `font-size: ${med.nombre}; max-width: 100%; overflow: hidden;`
+          + ` text-overflow: ellipsis; white-space: nowrap;`
+          + ` ${this.contenidoEstilo(t.contenido, 2)}`,
+        entrar: quieto ? undefined : () => m.apuntar(t.id),
+        salir: quieto ? undefined : () => { m.cancelarSeleccion(); m.soltar(); },
+        marcar: quieto ? undefined : () => m.seleccionar(t.id),
+        aflojar: quieto ? undefined : () => m.cancelarSeleccion(),
+        elegir: quieto
+          ? () => this.promover(id)
+          : () => { if (t.protagonista) this.abrirVisor(t.id); else m.confirmar(t.id); },
+        fin: (e) => { if (e.propertyName === "transform" && t.protagonista) m.finalizarTransicion(); }
+      };
+    });
+  }
+
+  renderVals() {
+    const out = {};
+    this.grupos().forEach((g) => {
+      const M = g.id[0].toUpperCase() + g.id.slice(1);
+      out["refSec" + M] = (el) => { this.secs[g.id] = el; };
+      out["refPista" + M] = (el) => { this.pistas[g.id] = el; };
+      out["prom" + M] = () => this.promover(g.id);
+      out["acento" + M] = `rgba(${g.acento},0.92)`;
+      out["regla" + M] = `linear-gradient(90deg, rgba(${g.acento},0) 0%, rgba(${g.acento},0.55) 100%)`;
+      out["regla" + M + "Fin"] = `linear-gradient(90deg, rgba(${g.acento},0.55) 0%, rgba(${g.acento},0) 100%)`;
+      out[g.id] = [];
+    });
+    Object.assign(out, this.visorVals());
+
+    if (!this._m) return out;   /* las crea esperarEstado(), fuera del ciclo de render */
+
+    const orden = this.orden();
+    this.grupos().forEach((g) => {
+      const M = g.id[0].toUpperCase() + g.id.slice(1);
+      const pos = orden.indexOf(g.id);
+      const grande = pos === 0;
+      const med = this.medidas(g.id, grande);
+      const marco = this.marco(g.acento, grande, med.f);
+      out[g.id] = this.baraja(g.id, g.acento, grande, med);
+      /* la posición en el flujo la decide `order`: el DOM no se reordena,
+         así que los módulos conservan su identidad y pueden interpolar */
+      out["sec" + M] = `order: ${pos}; min-width: 0; max-width: 100%;`
+        + (grande ? " flex: 0 0 100%;" : " flex: 1 1 260px;");
+      out["marco" + M] = marco.exterior;
+      out["marco" + M + "Interior"] = marco.interior;
+      out["titulo" + M] = `font-size: ${med.titulo}; transition: font-size ${MORFO}ms ${CURVA};`;
+      out["tituloFila" + M] = "position: relative; z-index: 300; display: flex; align-items: center;"
+        + (grande ? " margin-bottom: 4px;" : " margin-bottom: 2px;")
+        + (grande ? " cursor: default;" : " cursor: pointer;");
+      out["pista" + M] = `position: relative; height: ${med.pista}px;`
+        + ` margin-top: ${Math.round((grande ? 54 : 32) * med.f)}px;`
+        + ` transition: height ${MORFO}ms ${CURVA};`;
+    });
+    return out;
+  }
+}
+
+</script>
+<!-- ═════════ Ver todo: rejilla + visor propio ═════════
+     Se monta cuando llegan los datos y cada vez que cambian.
+     Fuera del ciclo de React a propósito: es DOM plano, así que
+     un redibujado del componente no se lleva por delante estos
+     escuchadores (ya nos pasó con el nav). -->
+<script>
+(function () {
+  "use strict";
+
+  var TOPE  = 5;   /* debe coincidir con el tope del abanico */
+  /* Las fichas viven en el dominio principal, no aquí en Vercel. */
+  var SITIO = "https://zenithestudios.com";
+
+  var seccion = document.getElementById("zn-todo");
+  var caja    = document.getElementById("zn-caja");
+  var tira    = document.getElementById("zn-caja-tira");
+  if (!seccion || !caja) return;
+
+  function texto(el, v) { if (el) el.textContent = v || ""; }
+
+  /* ── Construir la rejilla ─────────────────────────────────── */
+  function montar() {
+    var C = window.ZnContenido;
+    if (!C || !C.grupos || !C.grupos.length) { seccion.hidden = true; return; }
+
+    var partes = [];
+    var total  = 0;
+
+    C.grupos.forEach(function (g) {
+      var resto = C.deCategoriaResto ? C.deCategoriaResto(g.id) : [];
+      if (!resto.length) return;
+      total += resto.length;
+
+      var items = resto.map(function (p) {
+        var n = (p.piezas && p.piezas.length) || 0;
+        /* Enlace de verdad, no un <button>: así Google lo rastrea, se
+           puede abrir en pestaña nueva con el botón central y se puede
+           copiar la dirección. El clic normal lo intercepta el visor,
+           que es más rápido que cargar la página entera. */
+        return '<a class="zn-todo-item" href="' + esc(SITIO + '/trabajo/' + p.id) + '"'
+          + ' data-trabajo="' + esc(p.id) + '">'
+          + (p.portada
+              ? '<img class="zn-todo-img" src="' + esc(p.portada) + '" alt="" loading="lazy">'
+              : '<span class="zn-todo-rayas"></span>')
+          + '<span class="zn-todo-velo"></span>'
+          + (n ? '<span class="zn-todo-n">' + n + '</span>' : '')
+          + '<span class="zn-todo-txt">'
+            + '<span class="zn-todo-et">' + esc(p.red || "") + '</span>'
+            + '<span class="zn-todo-nom">' + esc(p.nombre) + '</span>'
+          + '</span>'
+          + '</a>';
+      }).join("");
+
+      partes.push(
+        '<div class="zn-todo-grupo">'
+        + '<h3 class="zn-todo-titulo">'
+          + '<span class="zn-todo-punto" style="background:rgb(' + esc(g.acento) + ')"></span>'
+          + esc(g.nombre)
+        + '</h3>'
+        + '<div class="zn-todo-rejilla">' + items + '</div>'
+        + '</div>'
+      );
+    });
+
+    /* Sin sobrantes no hay nada que enseñar: el abanico ya los muestra
+       todos y una sección vacía sólo alarga la página. */
+    if (!partes.length) { seccion.hidden = true; return; }
+
+    seccion.innerHTML =
+      '<div class="zn-todo-cab">'
+      + '<h2 id="zn-todo-titulo">Más trabajo</h2>'
+      + '<p>' + total + (total === 1 ? ' proyecto más' : ' proyectos más')
+      + ', fuera del abanico.</p>'
+      + '</div>' + partes.join("");
+    seccion.hidden = false;
+  }
+
+  function esc(v) {
+    return String(v == null ? "" : v)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+
+  /* ── Visor ────────────────────────────────────────────────── */
+  var scrollPrevio = 0;
+
+  function abrir(id) {
+    var C = window.ZnContenido;
+    var p = C && C.proyecto ? C.proyecto(id) : null;
+    if (!p) return;
+
+    texto(document.getElementById("zn-caja-etiqueta"), p.red);
+    texto(document.getElementById("zn-caja-nombre"), p.nombre);
+    texto(document.getElementById("zn-caja-nota"), (p.visor && p.visor.nota) || "");
+    document.getElementById("zn-caja-ficha").href = SITIO + "/trabajo/" + p.id;
+
+    var piezas = p.piezas || [];
+    tira.innerHTML = piezas.length
+      ? piezas.map(function (x) {
+          /* width/height reales: el navegador reserva el hueco antes de
+             descargar y la página no pega el salto al ir cargando. */
+          return '<img src="' + esc(x.url) + '" alt="' + esc(x.texto || p.nombre) + '"'
+            + (x.ancho ? ' width="' + x.ancho + '" height="' + x.alto + '"' : '')
+            + ' loading="lazy">';
+        }).join("")
+      : '<p class="zn-caja-vacio">Este trabajo todavía no tiene imágenes.</p>';
+
+    scrollPrevio = window.scrollY;
+    caja.hidden = false;
+    document.body.style.overflow = "hidden";
+    document.getElementById("zn-caja-cerrar").focus();
+  }
+
+  function cerrar() {
+    caja.hidden = true;
+    tira.innerHTML = "";        /* suelta las imágenes de la memoria */
+    document.body.style.overflow = "";
+    window.scrollTo(0, scrollPrevio);
+  }
+
+  seccion.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-trabajo]");
+    if (!b) return;
+    /* Si quiere abrirlo aparte, se respeta: no secuestramos
+       ctrl+clic, cmd+clic ni el botón central. */
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    e.preventDefault();
+    abrir(b.getAttribute("data-trabajo"));
+  });
+  document.getElementById("zn-caja-cerrar").addEventListener("click", cerrar);
+  caja.addEventListener("click", function (e) { if (e.target === caja) cerrar(); });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && !caja.hidden) cerrar();
+  });
+
+  window.addEventListener("zn-contenido-listo", montar);
+  montar();
+})();
+</script>
+</body>
+</html>

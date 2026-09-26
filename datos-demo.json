@@ -1,0 +1,34 @@
+{
+  "version": 2,
+  "grupos": [
+    { "id": "contenido", "nombre": "Contenido", "acento": "138,180,248" },
+    { "id": "marketing", "nombre": "Marketing", "acento": "94,214,168" },
+    { "id": "branding",  "nombre": "Branding",  "acento": "230,168,74" },
+    { "id": "software",  "nombre": "Software",  "acento": "168,124,240" }
+  ],
+  "proyectos": [
+    { "id": "p1", "categoria": "contenido", "nombre": "Big Bola", "red": "Instagram", "pags": "2026",
+      "visor": { "tipo": "mosaico", "piezas": 6, "nota": "Prueba de mosaico.", "chips": ["Foto"] },
+      "piezas": [] },
+    { "id": "p2", "categoria": "contenido", "nombre": "Holcim", "red": "Fotografía", "pags": "2026",
+      "visor": { "tipo": "carrusel", "piezas": 5, "nota": "Prueba de carrusel.", "chips": [] },
+      "piezas": [] },
+    { "id": "p3", "categoria": "contenido", "nombre": "ZTE", "red": "TikTok", "pags": "2025",
+      "visor": { "tipo": "reel", "piezas": 4, "nota": "Prueba de reel.", "chips": ["9:16","TikTok"] },
+      "piezas": [] },
+    { "id": "p4", "categoria": "marketing", "nombre": "Kings Bebidas", "red": "Campaña", "pags": "2026",
+      "visor": { "tipo": "cine", "piezas": 4, "nota": "Prueba de video.", "chips": [] }, "piezas": [] },
+    { "id": "p5", "categoria": "marketing", "nombre": "Moon Sweet", "red": "Instagram", "pags": "2025",
+      "visor": { "tipo": "mosaico", "piezas": 6, "nota": "", "chips": [] }, "piezas": [] },
+    { "id": "p6", "categoria": "branding", "nombre": "Tecnowow", "red": "Identidad", "pags": "2026",
+      "visor": { "tipo": "presentacion", "piezas": 8, "nota": "Prueba de presentación.", "chips": [] },
+      "piezas": [] },
+    { "id": "p7", "categoria": "branding", "nombre": "Cabbai", "red": "Identidad", "pags": "2025",
+      "visor": { "tipo": "mosaico", "piezas": 6, "nota": "", "chips": [] }, "piezas": [] },
+    { "id": "p8", "categoria": "software", "nombre": "Instituto Avanza", "red": "Web App", "pags": "2026",
+      "visor": { "tipo": "presentacion", "piezas": 6, "nota": "Prueba de producto.", "chips": [] },
+      "piezas": [] },
+    { "id": "p9", "categoria": "software", "nombre": "JMD Auto Parts", "red": "E-commerce", "pags": "2025",
+      "visor": { "tipo": "cine", "piezas": 5, "nota": "", "chips": [] }, "piezas": [] }
+  ]
+}

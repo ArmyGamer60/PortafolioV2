@@ -1,0 +1,7 @@
+# Enlace local con el proyecto de Vercel (IDs de cuenta). No se sube.
+.vercel
+
+# Basura del sistema
+Thumbs.db
+desktop.ini
+.DS_Store
