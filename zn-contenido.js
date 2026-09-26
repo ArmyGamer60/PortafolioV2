@@ -40,7 +40,7 @@
   var DEMO = /[?&]demo=1/.test(global.location.search);
   var URL_DATOS = DEMO ? "./datos-demo.json" : ORIGEN + "/portafolio-datos.php";
 
-  var TIPOS = ["mosaico", "carrusel", "presentacion", "reel", "cine"];
+  var TIPOS = ["mosaico", "carrusel", "presentacion", "reel", "cine", "sitio"];
   var VISOR_MINIMO = { tipo: "mosaico", piezas: 1, nota: "", chips: [] };
 
   /* Estado local, reemplazado en cuanto llegan los datos */
@@ -65,8 +65,11 @@
     if (!p) return null;
     var d = p.visor || VISOR_MINIMO;
     var tipo = TIPOS.indexOf(d.tipo) >= 0 ? d.tipo : VISOR_MINIMO.tipo;
-    var piezas = Math.max(1, Math.min(12, parseInt(d.piezas, 10) || 1));
-    return { tipo: tipo, piezas: piezas, nota: d.nota || "", chips: d.chips || [] };
+    /* Antes el tope era 12: un PDF de 20 láminas enseñaba sólo 12 y
+       el resto no había forma de verlo. El panel admite hasta 80. */
+    var piezas = Math.max(1, Math.min(300, parseInt(d.piezas, 10) || 1));
+    return { tipo: tipo, piezas: piezas, nota: d.nota || "", chips: d.chips || [],
+             enlace: /^https?:\/\//i.test(d.enlace || "") ? d.enlace : "" };
   }
 
   /* Imágenes reales de una pieza. Vienen de uploads/ en Hostinger,

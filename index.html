@@ -503,30 +503,68 @@
   .zn-todo-n{ position:absolute; top:10px; right:10px; background:rgba(0,0,0,.55);
               color:#f4efe4; border-radius:999px; font-size:11px; padding:3px 9px }
 
-  /* ═══ Visor de la rejilla ════════════════════════════════════ */
-  .zn-caja{ position:fixed; inset:0; z-index:400; background:rgba(8,8,12,.94);
-            overflow-y:auto; padding:64px 20px 40px;
-            -webkit-overflow-scrolling:touch }
-  .zn-caja-cerrar{ position:fixed; top:18px; right:18px; z-index:2;
-                   width:44px; height:44px; border-radius:50%; cursor:pointer;
-                   background:rgba(255,255,255,.1); color:#f4efe4;
-                   border:1px solid rgba(255,255,255,.22); font-size:17px }
-  .zn-caja-cerrar:hover{ background:rgba(255,255,255,.2) }
-  .zn-caja-cuerpo{ max-width:1000px; margin:0 auto }
-  .zn-caja-cab{ text-align:center; margin-bottom:30px; color:#f4efe4 }
-  .zn-caja-etiqueta{ font-size:11px; letter-spacing:.16em; text-transform:uppercase;
-                     color:rgba(244,239,228,.66) }
-  .zn-caja-cab h3{ font-family:var(--zn-serif); font-weight:500;
-                   font-size:clamp(24px,5vw,36px); margin:6px 0 0 }
-  .zn-caja-cab p{ color:rgba(244,239,228,.72); font-size:14px; margin:8px auto 0; max-width:60ch }
-  .zn-caja-ficha{ display:inline-block; margin-top:14px; font-size:13px;
-                  color:rgba(244,239,228,.8); border-bottom:1px solid rgba(244,239,228,.3);
-                  padding-bottom:2px; transition:color .2s, border-color .2s }
-  .zn-caja-ficha:hover{ color:#fff; border-color:#fff }
-  .zn-caja-tira{ display:flex; flex-direction:column; gap:16px }
-  .zn-caja-tira img{ width:100%; height:auto; display:block; border-radius:12px;
-                     background:rgba(255,255,255,.05) }
-  .zn-caja-vacio{ text-align:center; color:rgba(244,239,228,.6); padding:50px 0; font-size:14px }
+  /* ═══ Vista ampliada (ZnLuz) ═══════════════════════════════
+     Una foto, una lámina o una pantalla a toda la ventana. Encima de
+     todo, también del visor (z 900). Fondo casi negro en los dos
+     temas: es lo que se usa para mirar imágenes. */
+  .zn-luz{ position:fixed; inset:0; z-index:1000; display:flex; flex-direction:column;
+           background:rgba(6,7,10,.985); color:#f4efe4; animation:znVelo 200ms ease both }
+  .zn-luz[hidden]{ display:none }
+  .zn-luz-cab{ flex:0 0 auto; display:flex; align-items:center; gap:10px;
+               padding:10px 12px 10px 18px; min-height:60px; box-sizing:border-box }
+  .zn-luz-titulo{ flex:1 1 auto; min-width:0; font-family:'Playfair Display', Georgia, serif;
+                  font-size:16px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+  .zn-luz-cont{ font-family:ui-monospace, monospace; font-size:11px; letter-spacing:.14em;
+                color:rgba(244,239,228,.66); flex:0 0 auto }
+  .zn-luz-btn{ flex:0 0 auto; width:44px; height:44px; border-radius:50%; cursor:pointer;
+               display:flex; align-items:center; justify-content:center;
+               background:rgba(255,255,255,.08); color:#f4efe4;
+               border:1px solid rgba(255,255,255,.18); transition:background .2s }
+  .zn-luz-btn:hover{ background:rgba(255,255,255,.18) }
+  .zn-luz-btn[hidden]{ display:none }
+  .zn-luz-escena{ position:relative; flex:1 1 auto; min-height:0; display:flex;
+                  align-items:center; justify-content:center; padding:0 72px;
+                  overflow:hidden; touch-action:pinch-zoom }
+  /* width/height auto + los dos máximos: el navegador la encoge SIN
+     deformarla y la caja mide lo que la foto (no la escena entera). */
+  .zn-luz-escena > img{ display:block; width:auto; height:auto; max-width:100%; max-height:100%;
+                        user-select:none; -webkit-user-drag:none }
+  .zn-luz-escena > video{ display:block; max-width:100%; max-height:100%; background:#000 }
+  .zn-luz-escena > iframe{ display:block; border:0; background:#000;
+                           width:min(100%, calc((100vh - 170px) * 16 / 9)); aspect-ratio:16/9 }
+  /* Imagen con más detalle del que cabe: clic para verla a tamaño real. */
+  .zn-luz-escena.ampliable > img{ cursor:zoom-in }
+  .zn-luz-escena.zoom{ overflow:auto; display:block; padding:0 }
+  .zn-luz-escena.zoom > img{ max-width:none; max-height:none; margin:0 auto; cursor:zoom-out }
+  /* Página entera (captura muy alta): a lo ancho y con scroll, que es
+     como se lee una web. Encogida entera no se leería nada. */
+  .zn-luz-escena.recorrer{ overflow-y:auto; display:block; padding:0 72px 24px }
+  .zn-luz-escena.recorrer > img{ max-height:none; width:min(100%, 1280px); height:auto; margin:0 auto }
+  .zn-luz-flecha{ position:absolute; top:50%; transform:translateY(-50%); z-index:2;
+                  width:52px; height:52px; border-radius:50%; cursor:pointer;
+                  display:flex; align-items:center; justify-content:center;
+                  background:rgba(255,255,255,.1); color:#f4efe4;
+                  border:1px solid rgba(255,255,255,.2); transition:background .2s }
+  .zn-luz-flecha:hover{ background:rgba(255,255,255,.22) }
+  .zn-luz-flecha[hidden]{ display:none }
+  .zn-luz-flecha.izq{ left:12px } .zn-luz-flecha.der{ right:12px }
+  .zn-luz-tira{ flex:0 0 auto; display:flex; gap:8px; justify-content:safe center;
+                overflow-x:auto; padding:10px 14px 14px; scrollbar-width:thin }
+  .zn-luz-tira[hidden]{ display:none }
+  .zn-luz-mini{ flex:0 0 auto; width:62px; height:44px; padding:0; border-radius:7px; cursor:pointer;
+                background:#1a1c22 center / cover no-repeat; border:2px solid transparent;
+                opacity:.5; transition:opacity .2s, border-color .2s }
+  .zn-luz-mini:hover{ opacity:.85 }
+  .zn-luz-mini[aria-current="true"]{ opacity:1; border-color:#f4efe4 }
+  .zn-luz-pie{ flex:0 0 auto; text-align:center; font-size:13px; color:rgba(244,239,228,.72);
+               padding:0 20px 4px; min-height:4px }
+  @media (max-width:680px){
+    .zn-luz-escena{ padding:0 }
+    .zn-luz-escena.recorrer{ padding:0 0 20px }
+    .zn-luz-flecha{ width:44px; height:44px; background:rgba(0,0,0,.45) }
+    .zn-luz-flecha.izq{ left:6px } .zn-luz-flecha.der{ right:6px }
+    .zn-luz-escena > iframe{ width:100% }
+  }
 
   .zn-foot{ position:relative; z-index:1; border-top:1px solid var(--zn-borde);
     padding:48px 24px 56px; text-align:center; }
@@ -709,6 +747,11 @@
             </div>
             <h2 style="margin: 0; font-family: 'Playfair Display', Georgia, serif; font-weight: 600; font-size: clamp(24px, 3.4vw, 38px); line-height: 1.04; letter-spacing: -0.01em; color: var(--zn-texto);">{{ visorNombre }}</h2>
             <p style="margin: 0; max-width: 56ch; font-size: 13px; line-height: 1.55; color: var(--zn-texto-60); text-wrap: pretty;">{{ visorNota }}</p>
+            <div style="{{ vChipsFila }}">
+              <sc-for list="{{ vChips }}" as="ch" hint-placeholder-count="2">
+                <span style="border-radius: 999px; padding: 5px 11px; font-size: 11px; letter-spacing: 0.06em; color: var(--zn-texto-72); background: var(--zn-borde); border: 1px solid var(--zn-borde);">{{ ch }}</span>
+              </sc-for>
+            </div>
           </div>
           <button onClick="{{ cerrarVisor }}" aria-label="Cerrar" style="margin-left: auto; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 999px; cursor: pointer; background: var(--zn-borde); border: 1px solid var(--zn-borde); color: var(--zn-texto-72);" style-hover="background: var(--zn-borde); color: var(--zn-texto);">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
@@ -718,20 +761,26 @@
         <sc-if value="{{ esMosaico }}" hint-placeholder-val="{{ false }}">
           <div style="{{ vRejilla }}">
             <sc-for list="{{ vPiezas }}" as="f" hint-placeholder-count="6">
-              <div style="{{ f.celda }}">
-                <div role="img" aria-label="{{ f.hint }}" style="{{ f.fondo }}"></div>
-                <div data-zn-medio="1" data-tipo="{{ f.tipo }}" data-src="{{ f.medio }}" data-poster="{{ f.poster }}" style="{{ f.medioEstilo }}"></div>
-              </div>
+              <button type="button" onClick="{{ f.ampliar }}" aria-label="{{ f.ampliarEtiqueta }}" style="{{ f.celda }}">
+                <span style="{{ f.fondo }}"></span>
+                <span style="{{ f.play }}">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M9 6.5v11l9-5.5z"></path></svg>
+                </span>
+              </button>
             </sc-for>
-            <div aria-hidden="true" style="flex: 999999 1 0px; height: 0;"></div>
+            <div aria-hidden="true" style="{{ vRelleno }}"></div>
           </div>
         </sc-if>
 
         <sc-if value="{{ esCarrusel }}" hint-placeholder-val="{{ false }}">
           <div style="display: flex; flex-direction: column; gap: 13px;">
-            <div onPointerDown="{{ vTocar }}" onPointerUp="{{ vSoltar }}" style="touch-action: pan-y; position: relative; aspect-ratio: 3 / 2; border-radius: 13px; overflow: hidden; background: var(--zn-hueco); border: 1px solid rgba(255,255,255,0.08);">
+            <div onPointerDown="{{ vTocar }}" onPointerUp="{{ vSoltar }}" style="{{ vEscenarioCar }}">
+              <div aria-hidden="true" style="{{ vDifuso }}"></div>
               <div role="img" aria-label="{{ vHint }}" style="{{ vFondo }}"></div>
               <div data-zn-medio="1" data-tipo="{{ vTipo }}" data-src="{{ vMedio }}" data-poster="{{ vPoster }}" style="{{ vMedioEstilo }}"></div>
+              <button onClick="{{ ampliar }}" aria-label="Ver en grande" title="Ver en grande" style="{{ vAmpliar }}">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"></path></svg>
+              </button>
               <button onClick="{{ anterior }}" aria-label="Anterior" style="{{ flechaIzq }}">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 6l-6 6 6 6"></path></svg>
               </button>
@@ -741,7 +790,7 @@
             </div>
             <div style="display: flex; align-items: center; gap: 8px; overflow-x: auto; padding-bottom: 2px;">
               <sc-for list="{{ vPiezas }}" as="f" hint-placeholder-count="7">
-                <button onClick="{{ f.ir }}" style="{{ f.mini }}">{{ f.num }}</button>
+                <button onClick="{{ f.ir }}" aria-label="{{ f.etiqueta }}" style="{{ f.mini }}"></button>
               </sc-for>
               <span style="margin-left: auto; flex: 0 0 auto; padding-left: 12px; font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 0.14em; color: var(--zn-texto-60);">{{ vContador }}</span>
             </div>
@@ -751,8 +800,12 @@
         <sc-if value="{{ esPresentacion }}" hint-placeholder-val="{{ false }}">
           <div style="display: flex; flex-direction: column; gap: 14px;">
             <div onPointerDown="{{ vTocar }}" onPointerUp="{{ vSoltar }}" style="{{ vEscenarioPres }}">
+              <div aria-hidden="true" style="{{ vDifuso }}"></div>
               <div role="img" aria-label="{{ vHint }}" style="{{ vFondo }}"></div>
               <div data-zn-medio="1" data-tipo="{{ vTipo }}" data-src="{{ vMedio }}" data-poster="{{ vPoster }}" style="{{ vMedioEstilo }}"></div>
+              <button onClick="{{ ampliar }}" aria-label="Ver en grande" title="Ver en grande" style="{{ vAmpliar }}">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"></path></svg>
+              </button>
             </div>
             <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
               <div style="flex: 1 1 220px; display: flex; gap: 5px; min-width: 0;">
@@ -771,9 +824,10 @@
 
         <sc-if value="{{ esReel }}" hint-placeholder-val="{{ false }}">
           <div style="display: flex; flex-wrap: wrap; gap: clamp(16px, 2.6vw, 30px);">
-            <div onPointerDown="{{ vTocar }}" onPointerUp="{{ vSoltar }}" style="touch-action: pan-y; position: relative; flex: 0 0 auto; width: clamp(190px, 46vw, 262px); aspect-ratio: 9 / 16; border-radius: 15px; overflow: hidden; background: var(--zn-hueco); border: 1px solid rgba(255,255,255,0.08);">
+            <div onPointerDown="{{ vTocar }}" onPointerUp="{{ vSoltar }}" style="{{ vEscenarioReel }}">
+              <div aria-hidden="true" style="{{ vDifuso }}"></div>
               <div role="img" aria-label="{{ vHint }}" style="{{ vFondo }}"></div>
-              <div data-zn-medio="1" data-tipo="{{ vTipo }}" data-src="{{ vMedio }}" data-poster="{{ vPoster }}" style="{{ vMedioEstilo }}"></div>
+              <div data-zn-medio="1" data-tipo="{{ vTipo }}" data-src="{{ vMedio }}" data-poster="{{ vPoster }}" data-auto="1" style="{{ vMedioEstilo }}"></div>
               <div style="position: absolute; top: 10px; left: 10px; right: 10px; display: flex; gap: 4px; pointer-events: none;">
                 <sc-for list="{{ vPiezas }}" as="f" hint-placeholder-count="4">
                   <span style="{{ f.barra }}"></span>
@@ -782,19 +836,19 @@
               <div style="{{ vDecoReel }}">
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="var(--zn-texto)"><path d="M9 6.5v11l9-5.5z"></path></svg>
               </div>
+              <button onClick="{{ ampliar }}" aria-label="Ver en grande" title="Ver en grande" style="{{ vAmpliar }}">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"></path></svg>
+              </button>
             </div>
-            <div style="flex: 1 1 230px; min-width: 0; display: flex; flex-direction: column; gap: 14px;">
-              <div style="display: flex; flex-wrap: wrap; gap: 7px;">
-                <sc-for list="{{ vChips }}" as="ch" hint-placeholder-count="2">
-                  <span style="border-radius: 999px; padding: 6px 12px; font-size: 11px; letter-spacing: 0.06em; color: var(--zn-texto-72); background: var(--zn-borde); border: 1px solid var(--zn-borde);">{{ ch }}</span>
-                </sc-for>
+            <div style="flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 12px;">
+              <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <span style="font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 0.14em; color: var(--zn-texto-60);">{{ vContador }}</span>
+                <button onClick="{{ anterior }}" style="{{ btnNav }}">Anterior</button>
+                <button onClick="{{ siguiente }}" style="{{ btnNavFuerte }}">Siguiente</button>
               </div>
-              <div style="display: flex; flex-direction: column; gap: 6px;">
+              <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 8px;">
                 <sc-for list="{{ vPiezas }}" as="f" hint-placeholder-count="4">
-                  <button onClick="{{ f.ir }}" style="{{ f.fila }}">
-                    <span style="font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 0.14em; opacity: 0.7;">{{ f.num }}</span>
-                    <span style="font-size: 13px;">{{ f.etiqueta }}</span>
-                  </button>
+                  <button onClick="{{ f.ir }}" aria-label="{{ f.etiqueta }}" style="{{ f.miniV }}"></button>
                 </sc-for>
               </div>
             </div>
@@ -803,7 +857,8 @@
 
         <sc-if value="{{ esCine }}" hint-placeholder-val="{{ false }}">
           <div style="display: flex; flex-direction: column; gap: 15px;">
-            <div onPointerDown="{{ vTocar }}" onPointerUp="{{ vSoltar }}" style="touch-action: pan-y; position: relative; aspect-ratio: 16 / 9; border-radius: 13px; overflow: hidden; background: var(--zn-hueco); border: 1px solid rgba(255,255,255,0.08);">
+            <div onPointerDown="{{ vTocar }}" onPointerUp="{{ vSoltar }}" style="{{ vEscenarioCine }}">
+              <div aria-hidden="true" style="{{ vDifuso }}"></div>
               <div role="img" aria-label="{{ vHint }}" style="{{ vFondo }}"></div>
               <div data-zn-medio="1" data-tipo="{{ vTipo }}" data-src="{{ vMedio }}" data-poster="{{ vPoster }}" style="{{ vMedioEstilo }}"></div>
               <div style="{{ vDecoCine }}">
@@ -815,14 +870,55 @@
                 </div>
                 <span style="font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 0.14em; color: var(--zn-texto-72);">{{ vContador }}</span>
               </div>
+              <button onClick="{{ ampliar }}" aria-label="Ver en grande" title="Ver en grande" style="{{ vAmpliar }}">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"></path></svg>
+              </button>
             </div>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 7px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 7px;">
               <sc-for list="{{ vPiezas }}" as="f" hint-placeholder-count="5">
                 <button onClick="{{ f.ir }}" style="{{ f.fila }}">
+                  <span aria-hidden="true" style="{{ f.pulgar }}"></span>
                   <span style="font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 0.14em; opacity: 0.7;">{{ f.num }}</span>
                   <span style="font-size: 13px;">{{ f.etiqueta }}</span>
                 </button>
               </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ esSitio }}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div onPointerDown="{{ vTocar }}" onPointerUp="{{ vSoltar }}" style="{{ sMarco }}">
+              <div style="{{ sBarra }}">
+                <span aria-hidden="true" style="display: flex; gap: 6px; flex: 0 0 auto;">
+                  <span style="width: 10px; height: 10px; border-radius: 50%; background: #ff5f57;"></span>
+                  <span style="width: 10px; height: 10px; border-radius: 50%; background: #febc2e;"></span>
+                  <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c840;"></span>
+                </span>
+                <span style="flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center; padding: 5px 12px; border-radius: 7px; font-size: 12px; color: var(--zn-texto-60); background: var(--zn-marco); border: 1px solid var(--zn-borde);">{{ sDominio }}</span>
+                <span aria-hidden="true" style="width: 38px; flex: 0 0 auto;"></span>
+              </div>
+              <div data-zn-ventana="1" data-zn-scroll="1" style="{{ sVentana }}">
+                <img src="{{ sImg }}" alt="{{ vHint }}" draggable="false" style="{{ sImgEstilo }}">
+                <div data-zn-medio="1" data-tipo="{{ vTipo }}" data-src="{{ vMedio }}" data-poster="{{ vPoster }}" style="{{ vMedioEstilo }}"></div>
+              </div>
+              <button onClick="{{ ampliar }}" aria-label="Ver en grande" title="Ver en grande" style="{{ vAmpliar }}">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"></path></svg>
+              </button>
+            </div>
+            <span style="{{ sPista }}">↕ Desliza dentro de la ventana para recorrer la página completa</span>
+            <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+              <div style="flex: 1 1 240px; display: flex; gap: 8px; overflow-x: auto; min-width: 0; padding: 2px;">
+                <sc-for list="{{ vPiezas }}" as="f" hint-placeholder-count="4">
+                  <button onClick="{{ f.ir }}" aria-label="{{ f.etiqueta }}" style="{{ f.miniSitio }}"></button>
+                </sc-for>
+              </div>
+              <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <span style="font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 0.14em; color: var(--zn-texto-60);">{{ vContador }}</span>
+                <button onClick="{{ anterior }}" style="{{ btnNav }}">Anterior</button>
+                <button onClick="{{ siguiente }}" style="{{ btnNav }}">Siguiente</button>
+                <a href="{{ sEnlace }}" target="_blank" rel="noopener" style="{{ sEnlaceEstilo }}">Visitar sitio ↗</a>
+              </div>
             </div>
           </div>
         </sc-if>
@@ -842,19 +938,27 @@
      el número de categorías, y React no la vuelve a dibujar. -->
 <section id="zn-todo" class="zn-todo" hidden aria-labelledby="zn-todo-titulo"></section>
 
-<!-- Visor propio de la rejilla. El del componente es estado interno de
-     React y no se puede abrir desde fuera sin pelearse con él. -->
-<div id="zn-caja" class="zn-caja" hidden role="dialog" aria-modal="true" aria-label="Imágenes del trabajo">
-  <button id="zn-caja-cerrar" class="zn-caja-cerrar" aria-label="Cerrar">✕</button>
-  <div class="zn-caja-cuerpo">
-    <header class="zn-caja-cab">
-      <span id="zn-caja-etiqueta" class="zn-caja-etiqueta"></span>
-      <h3 id="zn-caja-nombre"></h3>
-      <p id="zn-caja-nota"></p>
-      <a id="zn-caja-ficha" class="zn-caja-ficha" href="#">Ver la ficha completa ↗</a>
-    </header>
-    <div id="zn-caja-tira" class="zn-caja-tira"></div>
+<!-- Vista ampliada: una pieza a toda la ventana (ver ZnLuz abajo). -->
+<div id="zn-luz" class="zn-luz" hidden role="dialog" aria-modal="true" aria-label="Vista ampliada">
+  <div class="zn-luz-cab">
+    <span class="zn-luz-titulo" id="zn-luz-titulo"></span>
+    <span class="zn-luz-cont" id="zn-luz-cont"></span>
+    <button type="button" class="zn-luz-btn" id="zn-luz-pantalla" aria-label="Pantalla completa" title="Pantalla completa">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+    </button>
+    <button type="button" class="zn-luz-btn" id="zn-luz-cerrar" aria-label="Cerrar" title="Cerrar (Esc)">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
   </div>
+  <div class="zn-luz-escena" id="zn-luz-escena"></div>
+  <p class="zn-luz-pie" id="zn-luz-pie"></p>
+  <div class="zn-luz-tira" id="zn-luz-tira"></div>
+  <button type="button" class="zn-luz-flecha izq" id="zn-luz-ant" aria-label="Anterior">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 6l-6 6 6 6"/></svg>
+  </button>
+  <button type="button" class="zn-luz-flecha der" id="zn-luz-sig" aria-label="Siguiente">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6l6 6-6 6"/></svg>
+  </button>
 </div>
 <!-- ───────── Fondo cosmos ───────── -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -1192,16 +1296,36 @@ const REF_PRINCIPAL = 560, MIN_PRINCIPAL = 0.6, REF_SECUNDARIO = 330;
 /* Visor: solo la carta protagonista (la de enmedio) del módulo principal
    lo abre. El tipo de contenedor lo define cada tarjeta en
    zn-contenido.js, así el contenido cambia de forma según lo que es. */
-const ETIQUETA_TIPO = { mosaico: "Galería", carrusel: "Carrusel", presentacion: "Presentación", reel: "Reel vertical", cine: "Video" };
-const NOMBRE_PIEZA = { mosaico: "Foto", carrusel: "Imagen", presentacion: "Lámina", reel: "Escena", cine: "Capítulo" };
-const ANCHO_VISOR = { mosaico: 1060, carrusel: 900, presentacion: 1060, reel: 820, cine: 1000 };
-/* Mosaico: mismo ritmo (una pieza mayor + secundarias) en 6, 4 y 2
-   columnas, según el ancho de ventana. [columnas, filas] por pieza. */
-const REJILLA = {
-  6: [[4, 2], [2, 1], [2, 1], [2, 1], [2, 1], [2, 1]],
-  4: [[4, 2], [2, 1], [2, 1], [2, 1], [2, 1], [4, 1]],
-  2: [[2, 2], [1, 1], [1, 1], [1, 1], [1, 1], [2, 1]]
-};
+const ETIQUETA_TIPO = { mosaico: "Galería", carrusel: "Carrusel", presentacion: "Presentación", reel: "Reel vertical", cine: "Video", sitio: "Sitio web / App" };
+const NOMBRE_PIEZA = { mosaico: "Foto", carrusel: "Imagen", presentacion: "Lámina", reel: "Escena", cine: "Capítulo", sitio: "Pantalla" };
+/* Más anchos que antes (1060/900): en un monitor de 1920 el visor se
+   quedaba en la mitad de la pantalla y todo se veía pequeño. */
+const ANCHO_VISOR = { mosaico: 1240, carrusel: 1180, presentacion: 1280, reel: 900, cine: 1240, sitio: 1280 };
+/* Alto disponible para el escenario: la pantalla menos la cabecera del
+   visor y los controles. Con suelo, para que en horizontal en un móvil
+   no se quede en nada. Todos los escenarios lo usan: una lámina, un
+   reel o una foto vertical caben SIEMPRE enteros sin hacer scroll. */
+const ALTO_ESCENA = "max(260px, 100vh - 340px)";
+const ESCENA_BASE = "touch-action: pan-y; position: relative; margin: 0 auto; border-radius: 13px;"
+  + " overflow: hidden; background: var(--zn-hueco); border: 1px solid var(--zn-borde);";
+/* Proporción de una pieza, acotada para que una imagen extrema no
+   deforme el escenario (una tira de 1:6 no puede fijar su tamaño). */
+function proporcion(pz, def, min, max) {
+  const ar = pz && pz.ancho && pz.alto ? pz.ancho / pz.alto : def;
+  return Math.max(min, Math.min(max, ar));
+}
+/* ¿Es una pantalla de móvil? Las capturas de teléfono miden de ancho
+   750–1290 px y son más altas que anchas. Las de escritorio llegan a
+   1280 (pantalla 1x) o a 1920 (el servidor recorta las retina), así
+   que 1280 se excluye a propósito. */
+function esPantallaMovil(pz) {
+  if (!pz || !pz.ancho || !pz.alto) return false;
+  return pz.ancho <= 1290 && pz.ancho !== 1280 && pz.ancho / pz.alto <= 0.66;
+}
+function dominioDe(url) {
+  try { return new URL(url).hostname.replace(/^www\./, ""); } catch (e) { return ""; }
+}
+function urlCss(u) { return String(u).replace(/'/g, "%27"); }
 
 /* Fondo de una pieza del visor. Las imagenes vienen de uploads/ en
    Hostinger (via portafolio-datos.php), no del sidecar del editor:
@@ -1222,8 +1346,12 @@ function fondoTarjeta(proyecto) {
   if (!url) return `background-image: ${RAYADO};`;
   const velo = "linear-gradient(to top, rgba(0,0,0,.74) 0%,"
              + " rgba(0,0,0,.28) 38%, rgba(0,0,0,.12) 62%, rgba(0,0,0,.42) 100%)";
-  return `background-image: ${velo}, url('${String(url).replace(/'/g, "%27")}');`
-       + ` background-size: cover; background-position: center;`;
+  /* Una captura de sitio web es muy alta: centrada, la tarjeta enseñaba
+     el medio de la página. Arriba está la cabecera, que es la que se
+     reconoce. */
+  const arriba = proyecto.visor && proyecto.visor.tipo === "sitio";
+  return `background-image: ${velo}, url('${urlCss(url)}');`
+       + ` background-size: cover; background-position: ${arriba ? "center top" : "center"};`;
 }
 
 /* Vídeo y enlaces de YouTube/Vimeo.
@@ -1266,6 +1394,13 @@ function sincronizarMedios() {
       el.preload = "metadata";
       const poster = h.getAttribute("data-poster");
       if (poster) el.poster = poster;
+      /* Reel: arranca solo, en silencio y en bucle, como en Instagram o
+         TikTok. Sin silencio el navegador bloquea el arranque. El
+         sonido se activa con los controles. */
+      if (h.getAttribute("data-auto") === "1") {
+        el.muted = true; el.autoplay = true; el.loop = true;
+        el.setAttribute("muted", "");
+      }
       el.style.cssText = "width:100%;height:100%;object-fit:contain;display:block;background:#000;";
       /* El escenario pasa de pieza al deslizar el dedo. Sin esto,
          arrastrar la barra de tiempo del vídeo saltaba a la siguiente. */
@@ -1331,10 +1466,22 @@ class Component extends DCLogic {
     this.setState((s) => ({ indice: (s.indice + d + def.piezas) % def.piezas }));
   };
 
+  /* Vista ampliada (window.ZnLuz, fuera del componente). Al cerrarla,
+     el visor queda en la pieza en la que se estaba: si en grande se
+     avanzó hasta la 7, el carrusel también está en la 7. */
+  ampliar = (k) => {
+    const p = this.proyecto(this.state.visor);
+    if (!p || !window.ZnLuz) return;
+    window.ZnLuz.abrir(p.piezas || [], k, {
+      titulo: p.nombre,
+      alCerrar: (i) => { if (this.state.visor === p.id) this.setState({ indice: i }); }
+    });
+  };
+
   visorVals() {
     const out = {
       visorAbierto: false, esMosaico: false, esCarrusel: false,
-      esPresentacion: false, esReel: false, esCine: false,
+      esPresentacion: false, esReel: false, esCine: false, esSitio: false,
       cerrarVisor: this.cerrarVisor, tragar: (e) => e.stopPropagation(),
       siguiente: () => this.mover(1), anterior: () => this.mover(-1),
       vPiezas: [], vChips: []
@@ -1349,17 +1496,38 @@ class Component extends DCLogic {
     const n = def.piezas;
     const i = Math.max(0, Math.min(this.state.indice, n - 1));
     const vp = this.state.vp || (typeof window !== "undefined" ? window.innerWidth : 1200);
-    const cols = vp < 560 ? 2 : vp < 900 ? 4 : 6;
-    const rej = REJILLA[cols];
     const c = vp < 480 ? 18 : 26;
     const poly = `polygon(${c}px 0, calc(100% - ${c}px) 0, 100% ${c}px,`
       + ` 100% calc(100% - ${c}px), calc(100% - ${c}px) 100%, ${c}px 100%,`
       + ` 0 calc(100% - ${c}px), 0 ${c}px)`;
-    const flecha = (lado) => `position: absolute; ${lado}: 12px; top: 50%; transform: translateY(-50%);`
+    const flecha = (lado) => `position: absolute; ${lado}: 12px; top: 50%; transform: translateY(-50%); z-index: 3;`
       + " display: flex; align-items: center; justify-content: center; width: 44px; height: 44px;"
       + " border-radius: 999px; cursor: pointer; color: var(--zn-texto);"
       + " background: var(--zn-pastilla); border: 1px solid var(--zn-borde-fuerte);"
-      + " backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);";
+      + " backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);"
+      + (n < 2 ? " display: none;" : "");
+    const pieza = (k) => (CONT().piezaDe ? CONT().piezaDe(id, k + 1) : null);
+    const pz = pieza(i);
+    const medio = esMedio(pz);
+    const p1 = pieza(0);
+    /* Miniatura: la versión ligera. Sin imagen, el rayado. */
+    const pulgar = (x, pos) => x && (x.mini || x.url)
+      ? `background: var(--zn-hueco) url('${urlCss(x.mini || x.url)}') ${pos || "center"} / cover no-repeat;`
+      : `background: var(--zn-hueco); background-image: ${RAYADO};`;
+
+    /* ── Sitio web / App ────────────────────────────────────── */
+    const movil = esPantallaMovil(pz);
+    const arSitio = pz && pz.ancho && pz.alto ? pz.ancho / pz.alto : 16 / 10;
+    /* La pantalla de un teléfono es ~9:19,5. Si la captura es más alta
+       (una página entera hecha en el móvil), se recorre con scroll. */
+    const arPantalla = movil ? Math.max(arSitio, 0.4615) : arSitio;
+    /* La barra del navegador, la pista y las pantallas de abajo ocupan
+       ~120 px más que los controles de los demás contenedores. */
+    const altoVentana = "min(max(240px, 100vh - 470px), 780px)";
+    /* El teléfono no lleva barra de navegador: gana esos ~40 px. */
+    const altoMovil = "min(max(300px, 100vh - 430px), 780px)";
+    const recorre = !medio && (movil ? arSitio < 0.45 : arSitio < 1.2);
+    const enlace = def.enlace || "";
 
     Object.assign(out, {
       visorAbierto: true,
@@ -1368,19 +1536,23 @@ class Component extends DCLogic {
       esPresentacion: def.tipo === "presentacion",
       esReel: def.tipo === "reel",
       esCine: def.tipo === "cine",
+      esSitio: def.tipo === "sitio",
       visorNombre: p.nombre,
       visorRed: p.red,
       visorPags: p.pags,
       visorTipo: ETIQUETA_TIPO[def.tipo],
       visorNota: def.nota,
       vChips: def.chips || [],
+      vChipsFila: (def.chips && def.chips.length ? "display: flex;" : "display: none;")
+        + " flex-wrap: wrap; gap: 6px; margin-top: 2px;",
       /* Galería justificada: todas las fotos de una fila miden lo mismo
          de alto y la fila llena el ancho. Cada celda tiene la proporción
-         REAL de su foto, así que `cover` no recorta nada. Antes era una
-         rejilla con patrón fijo (celdas 2×2 y 1×1 de alto fijo): a una
-         foto 3:2 le cortaba la cabeza o los pies y, según cuántas fotos
-         hubiera, dejaba huecos. */
-      vRejilla: "display: flex; flex-wrap: wrap; gap: 10px;",
+         REAL de su foto, así que `cover` no recorta nada. */
+      vRejilla: "display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;",
+      /* El relleno impide que la última fila se estire. Con 1–3 fotos no
+         hay «última fila»: sin él, quedan centradas en vez de pegadas a
+         la izquierda. */
+      vRelleno: n <= 3 ? "display: none;" : "flex: 999999 1 0px; height: 0;",
       vTocar: (e) => { this._gx = e.clientX; },
       vSoltar: (e) => {
         if (this._gx == null) return;
@@ -1388,27 +1560,77 @@ class Component extends DCLogic {
         this._gx = null;
         if (Math.abs(dx) > 44) this.mover(dx < 0 ? 1 : -1);
       },
+      ampliar: (e) => { if (e) e.stopPropagation(); this.ampliar(i); },
+      /* Botón «ver en grande». Un vídeo ya trae su pantalla completa en
+         los controles: ahí sobra y taparía el botón de sonido. */
+      vAmpliar: "position: absolute; top: 10px; right: 10px; z-index: 4; display: flex;"
+        + " align-items: center; justify-content: center; width: 38px; height: 38px;"
+        + " border-radius: 999px; cursor: zoom-in; color: var(--zn-texto);"
+        + " background: var(--zn-pastilla); border: 1px solid var(--zn-borde-fuerte);"
+        + " backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);"
+        + (medio ? " display: none;" : ""),
       vSlot: `zn-${id}-${i + 1}`,
-      /* Carrusel y Presentación encajan la imagen entera (contain): una
-         lámina de PDF o una foto vertical no se recortan. */
-      vFondo: fondoPieza(CONT().piezaDe ? CONT().piezaDe(id, i + 1) : null)
-        + (def.tipo === "carrusel" || def.tipo === "presentacion" ? " background-size: contain;" : ""),
-      ...medioDe(CONT().piezaDe ? CONT().piezaDe(id, i + 1) : null, "v"),
-      /* El escenario de Presentación toma la proporción de la primera
-         lámina: un PDF en A4 vertical no se aplasta en 16:9. El alto se
-         limita para que una lámina vertical quepa en pantalla. */
-      vEscenarioPres: (() => {
-        const p1 = CONT().piezaDe ? CONT().piezaDe(id, 1) : null;
-        const ar = p1 && p1.ancho && p1.alto ? p1.ancho / p1.alto : 16 / 9;
-        return `touch-action: pan-y; position: relative; aspect-ratio: ${ar.toFixed(4)};`
-          + ` width: min(100%, calc(68vh * ${ar.toFixed(4)})); margin: 0 auto;`
-          + " border-radius: 13px; overflow: hidden; background: var(--zn-hueco);"
-          + " border: 1px solid rgba(255,255,255,0.08);";
+      /* Todos los escenarios enseñan la imagen ENTERA (contain). El
+         hueco que deja una foto de otra proporción lo rellena la misma
+         foto desenfocada, en vez de una franja vacía. */
+      vFondo: fondoPieza(pz) + " background-size: contain;",
+      vDifuso: pz && pz.url && !medio
+        ? `position: absolute; inset: -40px; background: url('${urlCss(pz.mini || pz.url)}') center / cover no-repeat;`
+          + " filter: blur(30px) saturate(1.15); opacity: 0.5; pointer-events: none;"
+        : "display: none;",
+      ...medioDe(pz, "v"),
+      /* Carrusel: la proporción de la primera imagen, dentro del alto
+         de la pantalla. Antes era un 3:2 fijo, y una foto vertical se
+         veía como un sello en medio de una franja. */
+      vEscenarioCar: (() => {
+        const ar = proporcion(p1, 3 / 2, 0.6, 2.4);
+        return ESCENA_BASE + ` aspect-ratio: ${ar.toFixed(4)};`
+          + ` width: min(100%, calc(${ALTO_ESCENA} * ${ar.toFixed(4)}));`;
       })(),
-      vDecoReel: "position: absolute; left: 12px; bottom: 12px; display: flex; align-items: center; justify-content: center; width: 46px; height: 46px; border-radius: 999px; background: var(--zn-pastilla); border: 1px solid var(--zn-borde-fuerte); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); pointer-events: none;"
-        + (esMedio(CONT().piezaDe ? CONT().piezaDe(id, i + 1) : null) ? " display: none;" : ""),
-      vDecoCine: "position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: center; gap: 13px; padding: 30px 16px 14px; background: linear-gradient(180deg, rgba(5,8,15,0) 0%, rgba(5,8,15,0.75) 100%); pointer-events: none;"
-        + (esMedio(CONT().piezaDe ? CONT().piezaDe(id, i + 1) : null) ? " display: none;" : ""),
+      /* Presentación: la proporción de la primera lámina, así un PDF en
+         A4 vertical no se aplasta en 16:9. */
+      vEscenarioPres: (() => {
+        const ar = proporcion(p1, 16 / 9, 0.5, 2.6);
+        return ESCENA_BASE + ` aspect-ratio: ${ar.toFixed(4)};`
+          + ` width: min(100%, calc(${ALTO_ESCENA} * ${ar.toFixed(4)}));`;
+      })(),
+      /* Reel: un teléfono a la altura de la pantalla. Antes medía como
+         mucho 262 px de ancho; en un monitor era un sello. */
+      vEscenarioReel: ESCENA_BASE + " flex: 0 0 auto; aspect-ratio: 9 / 16; border-radius: 18px;"
+        + ` width: min(100%, calc(min(${ALTO_ESCENA}, 760px) * 0.5625)); margin: 0;`,
+      vEscenarioCine: ESCENA_BASE + " aspect-ratio: 16 / 9;"
+        + ` width: min(100%, calc(${ALTO_ESCENA} * 1.7778));`,
+      vDecoReel: "position: absolute; left: 12px; bottom: 12px; z-index: 2; display: flex; align-items: center; justify-content: center; width: 46px; height: 46px; border-radius: 999px; background: var(--zn-pastilla); border: 1px solid var(--zn-borde-fuerte); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); pointer-events: none;"
+        + (medio || !pz ? " display: none;" : ""),
+      vDecoCine: "position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: flex; align-items: center; gap: 13px; padding: 30px 16px 14px; background: linear-gradient(180deg, rgba(5,8,15,0) 0%, rgba(5,8,15,0.75) 100%); pointer-events: none;"
+        + (medio ? " display: none;" : ""),
+
+      /* Sitio web / App: la captura dentro de un navegador (o de un
+         teléfono) y se recorre con scroll, como la web de verdad. */
+      sMarco: "position: relative; touch-action: pan-y; box-sizing: border-box; margin: 0 auto;"
+        + (movil
+          ? ` width: min(100%, calc(${altoMovil} * ${arPantalla.toFixed(4)} + 22px));`
+            + " padding: 10px; border-radius: 34px; background: #0c0e13;"
+            + " border: 1px solid var(--zn-borde-fuerte); box-shadow: 0 24px 60px rgba(0,0,0,.28);"
+          : " width: 100%; border-radius: 12px; overflow: hidden; background: var(--zn-carta);"
+            + " border: 1px solid var(--zn-borde-fuerte); box-shadow: 0 24px 60px rgba(0,0,0,.22);"),
+      sBarra: movil ? "display: none;"
+        : "display: flex; align-items: center; gap: 12px; padding: 9px 12px;"
+          + " background: var(--zn-hueco); border-bottom: 1px solid var(--zn-borde);",
+      sDominio: dominioDe(enlace) || p.nombre,
+      sVentana: `position: relative; width: 100%; aspect-ratio: ${arPantalla.toFixed(4)};`
+        + ` max-height: ${movil ? "none" : altoVentana}; overflow-x: hidden;`
+        + ` overflow-y: ${medio ? "hidden" : "auto"}; overscroll-behavior: contain;`
+        + " background: var(--zn-hueco);" + (movil ? " border-radius: 25px;" : ""),
+      sImg: pz && pz.url && !medio ? pz.url : "",
+      sImgEstilo: pz && pz.url && !medio ? "display: block; width: 100%; height: auto; user-select: none;" : "display: none;",
+      sPista: (recorre ? "display: block;" : "display: none;")
+        + " margin-top: -4px; text-align: center; font-size: 11px; letter-spacing: 0.04em; color: var(--zn-texto-45);",
+      sEnlace: enlace || undefined,
+      sEnlaceEstilo: (enlace ? "display: inline-flex;" : "display: none;")
+        + " align-items: center; padding: 9px 16px; border-radius: 999px; font-size: 12px; font-weight: 500;"
+        + ` color: var(--zn-fondo); background: rgba(${a},0.92); border: 1px solid rgba(${a},0.95);`,
+
       vHint: `${NOMBRE_PIEZA[def.tipo]} ${i + 1} de ${n}`,
       vContador: `${String(i + 1).padStart(2, "0")} / ${String(n).padStart(2, "0")}`,
       vBarra: `width: ${Math.round(((i + 1) / n) * 100)}%; height: 100%; border-radius: 2px;`
@@ -1423,7 +1645,7 @@ class Component extends DCLogic {
         + ` background: linear-gradient(150deg, rgba(${a},0.6) 0%, rgba(${a},0.14) 46%, var(--zn-borde) 100%);`
         + ` clip-path: ${poly}; animation: znPanel 460ms ${CURVA} both;`,
       visorInterior: `position: relative; box-sizing: border-box; clip-path: ${poly}; background: var(--zn-marco);`
-        + ` padding: clamp(20px, 3vw, 34px); padding-right: clamp(14px, 2.2vw, 24px);`
+        + ` padding: clamp(16px, 3vw, 34px); padding-right: clamp(12px, 2.2vw, 24px);`
         + ` flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden;`
         + ` overscroll-behavior: contain;`,
       flechaIzq: flecha("left"),
@@ -1436,37 +1658,56 @@ class Component extends DCLogic {
       vPiezas: Array.from({ length: n }, (_, k) => {
         const act = k === i;
         const num = String(k + 1).padStart(2, "0");
+        const x = pieza(k);
+        const esVid = esMedio(x);
+        const marcoMini = `border: 2px solid ${act ? `rgba(${a},0.95)` : "transparent"};`
+          + ` opacity: ${act ? 1 : 0.62}; cursor: pointer; padding: 0;`
+          + " transition: opacity 200ms ease, border-color 200ms ease;";
         return {
           slot: `zn-${id}-${k + 1}`,
-          fondo: fondoPieza(CONT().piezaDe ? CONT().piezaDe(id, k + 1) : null),
-          ...medioDe(CONT().piezaDe ? CONT().piezaDe(id, k + 1) : null, ""),
+          fondo: fondoPieza(x),
           hint: `${NOMBRE_PIEZA[def.tipo]} ${k + 1} de ${n}`,
           etiqueta: `${NOMBRE_PIEZA[def.tipo]} ${num}`,
+          ampliarEtiqueta: `${esVid ? "Reproducir" : "Ampliar"} ${NOMBRE_PIEZA[def.tipo].toLowerCase()} ${k + 1} de ${n}`,
           num,
           ir: () => this.setState({ indice: k }),
+          ampliar: () => this.ampliar(k),
+          /* Galería. El alto de fila depende de cuántas fotos haya: con
+             una sola, a 210 px, una foto vertical quedaba en un sello de
+             168 px de ancho en medio de un visor de 1000. */
           celda: (() => {
-            /* flex-grow proporcional a la proporción: en cada fila todas
-               crecen lo justo para quedar a la misma altura. */
-            const pz = CONT().piezaDe ? CONT().piezaDe(id, k + 1) : null;
-            const ar = pz && pz.ancho && pz.alto ? pz.ancho / pz.alto : 1.5;
-            const alto = vp < 560 ? 130 : vp < 900 ? 170 : 210;
+            const ar = proporcion(x, 1.5, 0.3, 4);
+            const alto = n === 1 ? (vp < 560 ? 420 : 620)
+              : n <= 3 ? (vp < 560 ? 220 : vp < 900 ? 300 : 380)
+              : (vp < 560 ? 150 : vp < 900 ? 200 : 260);
             return `flex: ${ar.toFixed(4)} 1 ${Math.round(ar * alto)}px; aspect-ratio: ${ar.toFixed(4)};`
-              + " position: relative; overflow: hidden; border-radius: 10px;"
+              /* Con pocas fotos crecen hasta llenar el ancho: el tope evita
+                 que una vertical mida más que la pantalla. */
+              + (n <= 3 ? ` max-width: min(100%, calc(${ALTO_ESCENA} * ${ar.toFixed(4)}));` : "")
+              + " position: relative; overflow: hidden; border-radius: 10px; padding: 0; font: inherit;"
+              + ` cursor: ${esVid ? "pointer" : "zoom-in"};`
               + " background: var(--zn-hueco); border: 1px solid var(--zn-borde);";
           })(),
-          mini: `flex: 0 0 auto; width: 60px; height: 42px; border-radius: 8px; cursor: pointer;`
-            + ` font-family: ui-monospace, monospace; font-size: 10px; letter-spacing: 0.12em;`
-            + ` color: ${act ? "var(--zn-fondo)" : "var(--zn-texto-60)"};`
-            + ` background: ${act ? `rgba(${a},0.92)` : "var(--zn-borde)"};`
-            + ` border: 1px solid ${act ? `rgba(${a},0.95)` : "var(--zn-borde)"};`
-            + ` transition: background 200ms ease, color 200ms ease, border-color 200ms ease;`,
+          play: esVid
+            ? "position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex;"
+              + " align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 999px;"
+              + " background: rgba(0,0,0,.5); border: 1px solid rgba(255,255,255,.55);"
+              + " backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); pointer-events: none;"
+            : "display: none;",
+          /* Miniaturas con la imagen de verdad, no un número: así se
+             sabe a dónde se va antes de tocar. */
+          mini: `flex: 0 0 auto; width: 64px; height: 46px; border-radius: 8px; ${pulgar(x)} ${marcoMini}`,
+          miniV: `width: 100%; aspect-ratio: 9 / 16; border-radius: 9px; ${pulgar(x)} ${marcoMini}`,
+          miniSitio: `flex: 0 0 auto; height: 58px; border-radius: 7px;`
+            + ` width: ${esPantallaMovil(x) ? 32 : 86}px; ${pulgar(x, "center top")} ${marcoMini}`,
+          pulgar: `flex: 0 0 auto; width: 54px; height: 32px; border-radius: 6px; ${pulgar(x)}`,
           seg: `flex: 1 1 0; min-width: 0; height: 3px; padding: 0; border: 0; border-radius: 2px; cursor: pointer;`
-            + ` background: ${k <= i ? `rgba(${a},0.9)` : "rgba(255,255,255,0.13)"};`
+            + ` background: ${k <= i ? `rgba(${a},0.9)` : "var(--zn-borde-fuerte)"};`
             + ` transition: background 240ms ease;`,
           barra: `flex: 1 1 0; height: 2px; border-radius: 2px;`
-            + ` background: ${k <= i ? "rgba(255,255,255,0.92)" : "var(--zn-borde-fuerte)"};`,
+            + ` background: ${k <= i ? "rgba(255,255,255,0.92)" : "rgba(255,255,255,0.3)"};`,
           fila: `display: flex; align-items: center; gap: 11px; width: 100%; text-align: left; cursor: pointer;`
-            + ` padding: 10px 13px; border-radius: 9px; font: inherit;`
+            + ` padding: 7px 10px; border-radius: 9px; font: inherit;`
             + ` color: ${act ? "var(--zn-texto)" : "var(--zn-texto-60)"};`
             + ` background: ${act ? `rgba(${a},0.12)` : "transparent"};`
             + ` border: 1px solid ${act ? `rgba(${a},0.4)` : "var(--zn-borde)"};`
@@ -1544,6 +1785,14 @@ class Component extends DCLogic {
   componentDidUpdate() {
     this.reubicarModulos();
     sincronizarMedios();
+    /* Sitio web: al pasar de pantalla, la nueva empieza arriba. La
+       ventana es el mismo elemento, y sin esto heredaba el scroll de
+       la anterior (se abría a media página). */
+    const clave = this.state.visor + "|" + this.state.indice;
+    if (clave !== this._ultimaPieza) {
+      this._ultimaPieza = clave;
+      document.querySelectorAll("[data-zn-ventana]").forEach((el) => { el.scrollTop = 0; });
+    }
     /* Aquí NO se llama a medir(): hacer setState desde componentDidUpdate
        sin guarda es lo que dispara "Maximum update depth exceeded".
        Los cambios de ancho ya los notifica el ResizeObserver de
@@ -1594,6 +1843,10 @@ class Component extends DCLogic {
   componentDidMount() {
     sincronizarMedios();
     this.vivo = true;
+    /* «Más trabajo» (fuera del componente) abre este mismo visor, con el
+       contenedor de cada trabajo. Antes tenía uno propio que sólo sabía
+       apilar imágenes: los vídeos salían como una foto fija. */
+    window.ZnAbrirVisor = (id) => { if (this.proyecto(id)) this.abrirVisor(id); };
     /* zn-estado.js se carga aparte: en una red lenta puede no estar listo
        en el primer montaje. Se espera sin bloquear el pintado. */
     if (!this.maquinas()) this.esperarEstado();
@@ -1803,11 +2056,7 @@ class Component extends DCLogic {
   var SITIO = "https://zenithestudios.com";
 
   var seccion = document.getElementById("zn-todo");
-  var caja    = document.getElementById("zn-caja");
-  var tira    = document.getElementById("zn-caja-tira");
-  if (!seccion || !caja) return;
-
-  function texto(el, v) { if (el) el.textContent = v || ""; }
+  if (!seccion) return;
 
   /* ── Construir la rejilla ─────────────────────────────────── */
   function montar() {
@@ -1872,60 +2121,211 @@ class Component extends DCLogic {
       .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
   }
 
-  /* ── Visor ────────────────────────────────────────────────── */
-  var scrollPrevio = 0;
-
-  function abrir(id) {
-    var C = window.ZnContenido;
-    var p = C && C.proyecto ? C.proyecto(id) : null;
-    if (!p) return;
-
-    texto(document.getElementById("zn-caja-etiqueta"), p.red);
-    texto(document.getElementById("zn-caja-nombre"), p.nombre);
-    texto(document.getElementById("zn-caja-nota"), (p.visor && p.visor.nota) || "");
-    document.getElementById("zn-caja-ficha").href = SITIO + "/trabajo/" + p.id;
-
-    var piezas = p.piezas || [];
-    tira.innerHTML = piezas.length
-      ? piezas.map(function (x) {
-          /* width/height reales: el navegador reserva el hueco antes de
-             descargar y la página no pega el salto al ir cargando. */
-          return '<img src="' + esc(x.url) + '" alt="' + esc(x.texto || p.nombre) + '"'
-            + (x.ancho ? ' width="' + x.ancho + '" height="' + x.alto + '"' : '')
-            + ' loading="lazy">';
-        }).join("")
-      : '<p class="zn-caja-vacio">Este trabajo todavía no tiene imágenes.</p>';
-
-    scrollPrevio = window.scrollY;
-    caja.hidden = false;
-    document.body.style.overflow = "hidden";
-    document.getElementById("zn-caja-cerrar").focus();
-  }
-
-  function cerrar() {
-    caja.hidden = true;
-    tira.innerHTML = "";        /* suelta las imágenes de la memoria */
-    document.body.style.overflow = "";
-    window.scrollTo(0, scrollPrevio);
-  }
-
+  /* ── Abrir ────────────────────────────────────────────────────
+     Con el visor del componente, que conoce el contenedor de cada
+     trabajo (galería, presentación, reel, sitio…). Si todavía no está
+     listo, el enlace lleva a la ficha: nunca un clic muerto. */
   seccion.addEventListener("click", function (e) {
     var b = e.target.closest("[data-trabajo]");
     if (!b) return;
     /* Si quiere abrirlo aparte, se respeta: no secuestramos
        ctrl+clic, cmd+clic ni el botón central. */
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    if (typeof window.ZnAbrirVisor !== "function") return;
     e.preventDefault();
-    abrir(b.getAttribute("data-trabajo"));
-  });
-  document.getElementById("zn-caja-cerrar").addEventListener("click", cerrar);
-  caja.addEventListener("click", function (e) { if (e.target === caja) cerrar(); });
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" && !caja.hidden) cerrar();
+    window.ZnAbrirVisor(b.getAttribute("data-trabajo"));
   });
 
   window.addEventListener("zn-contenido-listo", montar);
   montar();
+})();
+</script>
+<!-- ═════════ Vista ampliada (ZnLuz) ═════════
+     Una pieza a toda la ventana: la foto de la galería que se veía
+     pequeña, una lámina para leerla, una página web para recorrerla.
+     DOM plano fuera de React, como «Más trabajo»: el visor la llama
+     con window.ZnLuz.abrir(piezas, índice, { titulo, alCerrar }). -->
+<script>
+(function () {
+  "use strict";
+  var luz = document.getElementById("zn-luz");
+  if (!luz) return;
+  var escena = document.getElementById("zn-luz-escena");
+  var tira   = document.getElementById("zn-luz-tira");
+  var cont   = document.getElementById("zn-luz-cont");
+  var titulo = document.getElementById("zn-luz-titulo");
+  var pie    = document.getElementById("zn-luz-pie");
+  var ant    = document.getElementById("zn-luz-ant");
+  var sig    = document.getElementById("zn-luz-sig");
+  var btnPantalla = document.getElementById("zn-luz-pantalla");
+  var btnCerrar   = document.getElementById("zn-luz-cerrar");
+
+  var piezas = [], i = 0, opciones = {}, foco = null, overflowPrevio = "";
+
+  /* iPhone no deja poner en pantalla completa nada que no sea un vídeo. */
+  var hayPantalla = !!(luz.requestFullscreen || luz.webkitRequestFullscreen);
+  btnPantalla.hidden = !hayPantalla;
+
+  function abrir(lista, indice, op) {
+    piezas = (lista || []).filter(function (p) { return p && (p.url || p.video || p.embed); });
+    if (!piezas.length) return;
+    opciones = op || {};
+    i = Math.max(0, Math.min(indice || 0, piezas.length - 1));
+    titulo.textContent = opciones.titulo || "";
+    foco = document.activeElement;
+    overflowPrevio = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    tira.innerHTML = piezas.map(function (p, k) {
+      var img = p.mini || p.url;
+      return '<button type="button" class="zn-luz-mini" data-k="' + k + '" aria-label="Pieza ' + (k + 1) + '"'
+        + (img ? ' style="background-image:url(\'' + String(img).replace(/'/g, "%27") + '\')"' : "")
+        + '></button>';
+    }).join("");
+    tira.hidden = piezas.length < 2;
+    ant.hidden = sig.hidden = piezas.length < 2;
+    luz.hidden = false;
+    pintar();
+    btnCerrar.focus();
+  }
+
+  function cerrar() {
+    if (luz.hidden) return;
+    salirPantalla();
+    luz.hidden = true;
+    escena.innerHTML = "";          /* detiene el vídeo y suelta memoria */
+    tira.innerHTML = "";
+    document.body.style.overflow = overflowPrevio;
+    if (foco && foco.focus) foco.focus();
+    if (typeof opciones.alCerrar === "function") opciones.alCerrar(i);
+  }
+
+  function mover(d) {
+    if (piezas.length < 2) return;
+    i = (i + d + piezas.length) % piezas.length;
+    pintar();
+  }
+
+  function pintar() {
+    var p = piezas[i];
+    escena.className = "zn-luz-escena";
+    escena.innerHTML = "";
+    escena.scrollTop = 0;
+    var el;
+    if (p.tipo === "video" && p.video) {
+      el = document.createElement("video");
+      el.src = p.video; el.controls = true; el.playsInline = true; el.autoplay = true;
+      if (p.url) el.poster = p.url;
+    } else if (p.tipo === "embed" && p.embed) {
+      el = document.createElement("iframe");
+      /* autoplay: ya se pidió verlo al abrirlo; que no haga falta otro clic. */
+      el.src = p.embed + (p.embed.indexOf("?") < 0 ? "?" : "&") + "autoplay=1";
+      el.title = p.texto || "Vídeo";
+      el.allow = "autoplay; fullscreen; picture-in-picture; encrypted-media";
+      el.allowFullscreen = true;
+      el.referrerPolicy = "strict-origin-when-cross-origin";
+    } else {
+      el = document.createElement("img");
+      el.src = p.url; el.alt = p.texto || ""; el.draggable = false;
+      if (p.ancho && p.alto) {
+        el.width = p.ancho; el.height = p.alto;
+        if (p.ancho / p.alto < 0.5) escena.classList.add("recorrer");
+      }
+      el.addEventListener("load", marcarAmpliable);
+    }
+    escena.appendChild(el);
+    marcarAmpliable();
+    cont.textContent = piezas.length > 1
+      ? String(i + 1).padStart(2, "0") + " / " + String(piezas.length).padStart(2, "0") : "";
+    pie.textContent = p.texto || "";
+    [].forEach.call(tira.children, function (b, k) {
+      b.setAttribute("aria-current", k === i ? "true" : "false");
+      if (k === i && b.scrollIntoView) b.scrollIntoView({ block: "nearest", inline: "center" });
+    });
+    /* Las vecinas se piden ya: el paso a la siguiente es instantáneo. */
+    [i + 1, i - 1].forEach(function (k) {
+      var q = piezas[(k + piezas.length) % piezas.length];
+      if (q && q.url && q.tipo !== "video" && q.tipo !== "embed") (new Image()).src = q.url;
+    });
+  }
+
+  /* Sólo se ofrece el zoom si la imagen tiene más detalle del que se ve. */
+  function marcarAmpliable() {
+    var img = escena.querySelector("img");
+    if (!img || escena.classList.contains("recorrer") || escena.classList.contains("zoom")) return;
+    var natural = img.naturalWidth || img.width;
+    escena.classList.toggle("ampliable", natural > img.clientWidth * 1.15);
+  }
+
+  escena.addEventListener("click", function (e) {
+    var img = e.target.tagName === "IMG" ? e.target : null;
+    if (!img) {
+      /* Clic en el fondo, fuera de la pieza: cerrar, como en cualquier visor. */
+      if (e.target === escena && !escena.classList.contains("zoom")) cerrar();
+      return;
+    }
+    if (escena.classList.contains("zoom")) {
+      escena.classList.remove("zoom");
+      marcarAmpliable();
+    } else if (escena.classList.contains("ampliable")) {
+      /* Se amplía hacia el punto tocado, no hacia la esquina. */
+      var r = img.getBoundingClientRect();
+      var fx = (e.clientX - r.left) / r.width, fy = (e.clientY - r.top) / r.height;
+      escena.classList.remove("ampliable");
+      escena.classList.add("zoom");
+      escena.scrollLeft = fx * img.scrollWidth - escena.clientWidth / 2;
+      escena.scrollTop  = fy * img.scrollHeight - escena.clientHeight / 2;
+    }
+  });
+
+  /* Deslizar con el dedo para pasar. No si hay zoom o se está
+     recorriendo una página: ahí el dedo mueve la imagen. */
+  var tx = null, ty = null;
+  escena.addEventListener("touchstart", function (e) {
+    if (e.touches.length !== 1) { tx = null; return; }
+    tx = e.touches[0].clientX; ty = e.touches[0].clientY;
+  }, { passive: true });
+  escena.addEventListener("touchend", function (e) {
+    if (tx == null || escena.classList.contains("zoom")) return;
+    var t = e.changedTouches[0], dx = t.clientX - tx, dy = t.clientY - ty;
+    tx = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.4) mover(dx < 0 ? 1 : -1);
+  }, { passive: true });
+
+  function salirPantalla() {
+    var fs = document.fullscreenElement || document.webkitFullscreenElement;
+    if (!fs) return;
+    (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+  }
+  btnPantalla.addEventListener("click", function () {
+    if (document.fullscreenElement || document.webkitFullscreenElement) return salirPantalla();
+    var f = luz.requestFullscreen || luz.webkitRequestFullscreen;
+    try { var r = f.call(luz); if (r && r.catch) r.catch(function () {}); } catch (e) {}
+  });
+
+  ant.addEventListener("click", function () { mover(-1); });
+  sig.addEventListener("click", function () { mover(1); });
+  btnCerrar.addEventListener("click", cerrar);
+  tira.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-k]");
+    if (b) { i = +b.getAttribute("data-k"); pintar(); }
+  });
+
+  /* En fase de captura y cortando la propagación: el visor de debajo
+     también escucha las flechas y Esc, y sin esto las dos cosas se
+     movían a la vez (o Esc cerraba las dos). */
+  window.addEventListener("keydown", function (e) {
+    if (luz.hidden) return;
+    if (e.key === "Escape") cerrar();
+    else if (e.key === "ArrowRight") mover(1);
+    else if (e.key === "ArrowLeft") mover(-1);
+    else return;
+    e.preventDefault();
+    e.stopPropagation();
+  }, true);
+
+  window.addEventListener("resize", function () { if (!luz.hidden) marcarAmpliable(); });
+
+  window.ZnLuz = { abrir: abrir, cerrar: cerrar };
 })();
 </script>
 </body>
