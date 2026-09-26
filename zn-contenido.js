@@ -155,7 +155,11 @@
      publica igualmente un ZnContenido vacío: la página se ve, con
      sus módulos y su mensaje de "aún no hay trabajo", en vez de
      quedarse en blanco. El error queda en consola. */
-  fetch(URL_DATOS, { credentials: "omit" })
+  /* cache: "no-cache" = preguntar siempre al servidor antes de usar la
+     copia guardada. Si nada cambió responde 304 y no se descarga nada;
+     si se guardó algo en el panel, llega al instante. Antes el
+     navegador reutilizaba su copia hasta 5 minutos sin preguntar. */
+  fetch(URL_DATOS, { credentials: "omit", cache: "no-cache" })
     .then(function (r) {
       if (!r.ok) throw new Error("HTTP " + r.status);
       return r.json();
