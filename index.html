@@ -720,6 +720,7 @@
             <sc-for list="{{ vPiezas }}" as="f" hint-placeholder-count="6">
               <div style="{{ f.celda }}">
                 <div role="img" aria-label="{{ f.hint }}" style="{{ f.fondo }}"></div>
+                <div data-zn-medio="1" data-tipo="{{ f.tipo }}" data-src="{{ f.medio }}" data-poster="{{ f.poster }}" style="{{ f.medioEstilo }}"></div>
               </div>
             </sc-for>
             <div aria-hidden="true" style="flex: 999999 1 0px; height: 0;"></div>
@@ -730,6 +731,7 @@
           <div style="display: flex; flex-direction: column; gap: 13px;">
             <div onPointerDown="{{ vTocar }}" onPointerUp="{{ vSoltar }}" style="touch-action: pan-y; position: relative; aspect-ratio: 3 / 2; border-radius: 13px; overflow: hidden; background: var(--zn-hueco); border: 1px solid rgba(255,255,255,0.08);">
               <div role="img" aria-label="{{ vHint }}" style="{{ vFondo }}"></div>
+              <div data-zn-medio="1" data-tipo="{{ vTipo }}" data-src="{{ vMedio }}" data-poster="{{ vPoster }}" style="{{ vMedioEstilo }}"></div>
               <button onClick="{{ anterior }}" aria-label="Anterior" style="{{ flechaIzq }}">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 6l-6 6 6 6"></path></svg>
               </button>
@@ -748,8 +750,9 @@
 
         <sc-if value="{{ esPresentacion }}" hint-placeholder-val="{{ false }}">
           <div style="display: flex; flex-direction: column; gap: 14px;">
-            <div onPointerDown="{{ vTocar }}" onPointerUp="{{ vSoltar }}" style="touch-action: pan-y; position: relative; aspect-ratio: 16 / 9; border-radius: 13px; overflow: hidden; background: var(--zn-hueco); border: 1px solid rgba(255,255,255,0.08);">
+            <div onPointerDown="{{ vTocar }}" onPointerUp="{{ vSoltar }}" style="{{ vEscenarioPres }}">
               <div role="img" aria-label="{{ vHint }}" style="{{ vFondo }}"></div>
+              <div data-zn-medio="1" data-tipo="{{ vTipo }}" data-src="{{ vMedio }}" data-poster="{{ vPoster }}" style="{{ vMedioEstilo }}"></div>
             </div>
             <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
               <div style="flex: 1 1 220px; display: flex; gap: 5px; min-width: 0;">
@@ -770,12 +773,13 @@
           <div style="display: flex; flex-wrap: wrap; gap: clamp(16px, 2.6vw, 30px);">
             <div onPointerDown="{{ vTocar }}" onPointerUp="{{ vSoltar }}" style="touch-action: pan-y; position: relative; flex: 0 0 auto; width: clamp(190px, 46vw, 262px); aspect-ratio: 9 / 16; border-radius: 15px; overflow: hidden; background: var(--zn-hueco); border: 1px solid rgba(255,255,255,0.08);">
               <div role="img" aria-label="{{ vHint }}" style="{{ vFondo }}"></div>
+              <div data-zn-medio="1" data-tipo="{{ vTipo }}" data-src="{{ vMedio }}" data-poster="{{ vPoster }}" style="{{ vMedioEstilo }}"></div>
               <div style="position: absolute; top: 10px; left: 10px; right: 10px; display: flex; gap: 4px; pointer-events: none;">
                 <sc-for list="{{ vPiezas }}" as="f" hint-placeholder-count="4">
                   <span style="{{ f.barra }}"></span>
                 </sc-for>
               </div>
-              <div style="position: absolute; left: 12px; bottom: 12px; display: flex; align-items: center; justify-content: center; width: 46px; height: 46px; border-radius: 999px; background: var(--zn-pastilla); border: 1px solid var(--zn-borde-fuerte); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); pointer-events: none;">
+              <div style="{{ vDecoReel }}">
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="var(--zn-texto)"><path d="M9 6.5v11l9-5.5z"></path></svg>
               </div>
             </div>
@@ -801,7 +805,8 @@
           <div style="display: flex; flex-direction: column; gap: 15px;">
             <div onPointerDown="{{ vTocar }}" onPointerUp="{{ vSoltar }}" style="touch-action: pan-y; position: relative; aspect-ratio: 16 / 9; border-radius: 13px; overflow: hidden; background: var(--zn-hueco); border: 1px solid rgba(255,255,255,0.08);">
               <div role="img" aria-label="{{ vHint }}" style="{{ vFondo }}"></div>
-              <div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: center; gap: 13px; padding: 30px 16px 14px; background: linear-gradient(180deg, rgba(5,8,15,0) 0%, rgba(5,8,15,0.75) 100%); pointer-events: none;">
+              <div data-zn-medio="1" data-tipo="{{ vTipo }}" data-src="{{ vMedio }}" data-poster="{{ vPoster }}" style="{{ vMedioEstilo }}"></div>
+              <div style="{{ vDecoCine }}">
                 <span style="display: flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 34px; height: 34px; border-radius: 999px; background: var(--zn-pastilla); border: 1px solid var(--zn-borde-fuerte);">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--zn-texto)"><path d="M9 6.5v11l9-5.5z"></path></svg>
                 </span>
@@ -1221,6 +1226,64 @@ function fondoTarjeta(proyecto) {
        + ` background-size: cover; background-position: center;`;
 }
 
+/* Vídeo y enlaces de YouTube/Vimeo.
+
+   No van en la plantilla: el runtime de .dc.html pasa los atributos tal
+   cual a React, y un `controls` o `allowfullscreen` vacío llegaría como
+   «desactivado». La plantilla deja un hueco marcado con data-zn-medio y
+   sincronizarMedios() mete dentro el <video> o el <iframe> con DOM
+   normal (ver el componente). */
+function esMedio(pieza) {
+  return !!(pieza && (pieza.tipo === "video" || pieza.tipo === "embed")
+            && (pieza.video || pieza.embed));
+}
+function medioDe(pieza, pre) {
+  const tipo = esMedio(pieza) ? pieza.tipo : "imagen";
+  const k = (n) => (pre ? pre + n[0].toUpperCase() + n.slice(1) : n);
+  return {
+    [k("tipo")]: tipo,
+    [k("medio")]: tipo === "video" ? pieza.video : tipo === "embed" ? pieza.embed : "",
+    [k("poster")]: (pieza && pieza.url) || "",
+    [k("medioEstilo")]: tipo === "imagen" ? "display: none;"
+      : "position: absolute; inset: 0; background: #000;"
+  };
+}
+
+function sincronizarMedios() {
+  document.querySelectorAll("[data-zn-medio]").forEach((h) => {
+    const tipo = h.getAttribute("data-tipo"), src = h.getAttribute("data-src") || "";
+    const clave = tipo + "|" + src;
+    if (h._znClave === clave) return;
+    h._znClave = clave;
+    h.textContent = "";
+    if (!src || (tipo !== "video" && tipo !== "embed")) return;
+    let el;
+    if (tipo === "video") {
+      el = document.createElement("video");
+      el.src = src;
+      el.controls = true;
+      el.playsInline = true;
+      el.preload = "metadata";
+      const poster = h.getAttribute("data-poster");
+      if (poster) el.poster = poster;
+      el.style.cssText = "width:100%;height:100%;object-fit:contain;display:block;background:#000;";
+      /* El escenario pasa de pieza al deslizar el dedo. Sin esto,
+         arrastrar la barra de tiempo del vídeo saltaba a la siguiente. */
+      ["pointerdown", "pointerup"].forEach((ev) => el.addEventListener(ev, (e) => e.stopPropagation()));
+    } else {
+      el = document.createElement("iframe");
+      el.src = src;
+      el.title = "Vídeo";
+      el.allow = "autoplay; fullscreen; picture-in-picture; encrypted-media";
+      el.allowFullscreen = true;
+      el.loading = "lazy";
+      el.referrerPolicy = "strict-origin-when-cross-origin";
+      el.style.cssText = "width:100%;height:100%;border:0;display:block;";
+    }
+    h.appendChild(el);
+  });
+}
+
 function fondoPieza(pieza) {
   if (!pieza || !pieza.url) return PIEZA_BASE;
   return PIEZA_BASE + ` background-image: url('${String(pieza.url).replace(/'/g, "%27")}');`
@@ -1326,7 +1389,26 @@ class Component extends DCLogic {
         if (Math.abs(dx) > 44) this.mover(dx < 0 ? 1 : -1);
       },
       vSlot: `zn-${id}-${i + 1}`,
-      vFondo: fondoPieza(CONT().piezaDe ? CONT().piezaDe(id, i + 1) : null),
+      /* Carrusel y Presentación encajan la imagen entera (contain): una
+         lámina de PDF o una foto vertical no se recortan. */
+      vFondo: fondoPieza(CONT().piezaDe ? CONT().piezaDe(id, i + 1) : null)
+        + (def.tipo === "carrusel" || def.tipo === "presentacion" ? " background-size: contain;" : ""),
+      ...medioDe(CONT().piezaDe ? CONT().piezaDe(id, i + 1) : null, "v"),
+      /* El escenario de Presentación toma la proporción de la primera
+         lámina: un PDF en A4 vertical no se aplasta en 16:9. El alto se
+         limita para que una lámina vertical quepa en pantalla. */
+      vEscenarioPres: (() => {
+        const p1 = CONT().piezaDe ? CONT().piezaDe(id, 1) : null;
+        const ar = p1 && p1.ancho && p1.alto ? p1.ancho / p1.alto : 16 / 9;
+        return `touch-action: pan-y; position: relative; aspect-ratio: ${ar.toFixed(4)};`
+          + ` width: min(100%, calc(68vh * ${ar.toFixed(4)})); margin: 0 auto;`
+          + " border-radius: 13px; overflow: hidden; background: var(--zn-hueco);"
+          + " border: 1px solid rgba(255,255,255,0.08);";
+      })(),
+      vDecoReel: "position: absolute; left: 12px; bottom: 12px; display: flex; align-items: center; justify-content: center; width: 46px; height: 46px; border-radius: 999px; background: var(--zn-pastilla); border: 1px solid var(--zn-borde-fuerte); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); pointer-events: none;"
+        + (esMedio(CONT().piezaDe ? CONT().piezaDe(id, i + 1) : null) ? " display: none;" : ""),
+      vDecoCine: "position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: center; gap: 13px; padding: 30px 16px 14px; background: linear-gradient(180deg, rgba(5,8,15,0) 0%, rgba(5,8,15,0.75) 100%); pointer-events: none;"
+        + (esMedio(CONT().piezaDe ? CONT().piezaDe(id, i + 1) : null) ? " display: none;" : ""),
       vHint: `${NOMBRE_PIEZA[def.tipo]} ${i + 1} de ${n}`,
       vContador: `${String(i + 1).padStart(2, "0")} / ${String(n).padStart(2, "0")}`,
       vBarra: `width: ${Math.round(((i + 1) / n) * 100)}%; height: 100%; border-radius: 2px;`
@@ -1357,6 +1439,7 @@ class Component extends DCLogic {
         return {
           slot: `zn-${id}-${k + 1}`,
           fondo: fondoPieza(CONT().piezaDe ? CONT().piezaDe(id, k + 1) : null),
+          ...medioDe(CONT().piezaDe ? CONT().piezaDe(id, k + 1) : null, ""),
           hint: `${NOMBRE_PIEZA[def.tipo]} ${k + 1} de ${n}`,
           etiqueta: `${NOMBRE_PIEZA[def.tipo]} ${num}`,
           num,
@@ -1460,6 +1543,7 @@ class Component extends DCLogic {
 
   componentDidUpdate() {
     this.reubicarModulos();
+    sincronizarMedios();
     /* Aquí NO se llama a medir(): hacer setState desde componentDidUpdate
        sin guarda es lo que dispara "Maximum update depth exceeded".
        Los cambios de ancho ya los notifica el ResizeObserver de
@@ -1508,6 +1592,7 @@ class Component extends DCLogic {
   };
 
   componentDidMount() {
+    sincronizarMedios();
     this.vivo = true;
     /* zn-estado.js se carga aparte: en una red lenta puede no estar listo
        en el primer montaje. Se espera sin bloquear el pintado. */
