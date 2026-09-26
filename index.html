@@ -899,7 +899,9 @@
                 <span aria-hidden="true" style="width: 38px; flex: 0 0 auto;"></span>
               </div>
               <div data-zn-ventana="1" data-zn-scroll="1" style="{{ sVentana }}">
-                <img src="{{ sImg }}" alt="{{ vHint }}" draggable="false" style="{{ sImgEstilo }}">
+                <!-- div con fondo y no <img>: el navegador lee la plantilla antes que
+                     React y pedía literalmente «{{ sImg }}» (un 404 por visita). -->
+                <div role="img" aria-label="{{ vHint }}" style="{{ sImgEstilo }}"></div>
                 <div data-zn-medio="1" data-tipo="{{ vTipo }}" data-src="{{ vMedio }}" data-poster="{{ vPoster }}" style="{{ vMedioEstilo }}"></div>
               </div>
               <button onClick="{{ ampliar }}" aria-label="Ver en grande" title="Ver en grande" style="{{ vAmpliar }}">
@@ -1622,8 +1624,12 @@ class Component extends DCLogic {
         + ` max-height: ${movil ? "none" : altoVentana}; overflow-x: hidden;`
         + ` overflow-y: ${medio ? "hidden" : "auto"}; overscroll-behavior: contain;`
         + " background: var(--zn-hueco);" + (movil ? " border-radius: 25px;" : ""),
-      sImg: pz && pz.url && !medio ? pz.url : "",
-      sImgEstilo: pz && pz.url && !medio ? "display: block; width: 100%; height: auto; user-select: none;" : "display: none;",
+      /* La captura a todo el ancho y con su alto real (aspect-ratio):
+         lo que sobra de la ventana se recorre con scroll. */
+      sImgEstilo: pz && pz.url && !medio
+        ? `display: block; width: 100%; aspect-ratio: ${arSitio.toFixed(5)};`
+          + ` background: url('${urlCss(pz.url)}') center top / 100% auto no-repeat;`
+        : "display: none;",
       sPista: (recorre ? "display: block;" : "display: none;")
         + " margin-top: -4px; text-align: center; font-size: 11px; letter-spacing: 0.04em; color: var(--zn-texto-45);",
       sEnlace: enlace || undefined,
